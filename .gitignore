@@ -1,0 +1,3 @@
+# Ignore Pods folder (CocoaPods dependencies)
+/Pods/
+
