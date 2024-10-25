@@ -7,9 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9D4229BE2CCB36FF0046602D /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9D4229BD2CCB36FF0046602D /* FirebaseCore */; };
 		9D58D7232CC9BC5600C31811 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D58D7222CC9BC5500C31811 /* GoogleService-Info.plist */; };
 		9D58D7262CC9BEDA00C31811 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 9D58D7252CC9BEDA00C31811 /* FirebaseDatabase */; };
-		9F8B497E55EE8378F25211A5 /* Pods_WordleWarriors.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37F57838C7E9207C9FCA4DB1 /* Pods_WordleWarriors.framework */; };
+		9DA77E852CCB2D3C00ABECC5 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9DA77E842CCB2D3C00ABECC5 /* FirebaseAuth */; };
+		9DA77E872CCB2D3C00ABECC5 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9DA77E862CCB2D3C00ABECC5 /* FirebaseFirestore */; };
+		9DA77E892CCB2D3C00ABECC5 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 9DA77E882CCB2D3C00ABECC5 /* FirebaseStorage */; };
 		F2F94F452CC8159E00642EDC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F94F442CC8159E00642EDC /* AppDelegate.swift */; };
 		F2F94F472CC8159E00642EDC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F94F462CC8159E00642EDC /* SceneDelegate.swift */; };
 		F2F94F492CC8159E00642EDC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F94F482CC8159E00642EDC /* ViewController.swift */; };
@@ -25,9 +28,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		37F57838C7E9207C9FCA4DB1 /* Pods_WordleWarriors.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordleWarriors.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6B3063828B3CE70856D88172 /* Pods-WordleWarriors.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordleWarriors.debug.xcconfig"; path = "Target Support Files/Pods-WordleWarriors/Pods-WordleWarriors.debug.xcconfig"; sourceTree = "<group>"; };
-		89B9C81A463E4DF332003323 /* Pods-WordleWarriors.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordleWarriors.release.xcconfig"; path = "Target Support Files/Pods-WordleWarriors/Pods-WordleWarriors.release.xcconfig"; sourceTree = "<group>"; };
 		9D58D7222CC9BC5500C31811 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F2F94F412CC8159E00642EDC /* WordleWarriors.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordleWarriors.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2F94F442CC8159E00642EDC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -51,38 +51,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D58D7262CC9BEDA00C31811 /* FirebaseDatabase in Frameworks */,
-				9F8B497E55EE8378F25211A5 /* Pods_WordleWarriors.framework in Frameworks */,
+				9D4229BE2CCB36FF0046602D /* FirebaseCore in Frameworks */,
+				9DA77E872CCB2D3C00ABECC5 /* FirebaseFirestore in Frameworks */,
+				9DA77E852CCB2D3C00ABECC5 /* FirebaseAuth in Frameworks */,
+				9DA77E892CCB2D3C00ABECC5 /* FirebaseStorage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2BF48CC56794F05F55386D7D /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				6B3063828B3CE70856D88172 /* Pods-WordleWarriors.debug.xcconfig */,
-				89B9C81A463E4DF332003323 /* Pods-WordleWarriors.release.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
-			sourceTree = "<group>";
-		};
-		C4AEFA384D6995000A19E34D /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				37F57838C7E9207C9FCA4DB1 /* Pods_WordleWarriors.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		F2F94F382CC8159E00642EDC = {
 			isa = PBXGroup;
 			children = (
 				F2F94F432CC8159E00642EDC /* WordleWarriors */,
 				F2F94F422CC8159E00642EDC /* Products */,
-				2BF48CC56794F05F55386D7D /* Pods */,
-				C4AEFA384D6995000A19E34D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -154,11 +137,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F2F94F552CC8159F00642EDC /* Build configuration list for PBXNativeTarget "WordleWarriors" */;
 			buildPhases = (
-				C22EE770A5F7169A8B2B56A7 /* [CP] Check Pods Manifest.lock */,
 				F2F94F3D2CC8159E00642EDC /* Sources */,
 				F2F94F3E2CC8159E00642EDC /* Frameworks */,
 				F2F94F3F2CC8159E00642EDC /* Resources */,
-				4F7C49DCEBB5270F23693C54 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -167,6 +148,10 @@
 			name = WordleWarriors;
 			packageProductDependencies = (
 				9D58D7252CC9BEDA00C31811 /* FirebaseDatabase */,
+				9DA77E842CCB2D3C00ABECC5 /* FirebaseAuth */,
+				9DA77E862CCB2D3C00ABECC5 /* FirebaseFirestore */,
+				9DA77E882CCB2D3C00ABECC5 /* FirebaseStorage */,
+				9D4229BD2CCB36FF0046602D /* FirebaseCore */,
 			);
 			productName = WordleWarriors;
 			productReference = F2F94F412CC8159E00642EDC /* WordleWarriors.app */;
@@ -222,48 +207,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		4F7C49DCEBB5270F23693C54 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WordleWarriors/Pods-WordleWarriors-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WordleWarriors/Pods-WordleWarriors-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WordleWarriors/Pods-WordleWarriors-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C22EE770A5F7169A8B2B56A7 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-WordleWarriors-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F2F94F3D2CC8159E00642EDC /* Sources */ = {
@@ -424,7 +367,6 @@
 		};
 		F2F94F562CC8159F00642EDC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6B3063828B3CE70856D88172 /* Pods-WordleWarriors.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -453,7 +395,6 @@
 		};
 		F2F94F572CC8159F00642EDC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89B9C81A463E4DF332003323 /* Pods-WordleWarriors.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -515,10 +456,30 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		9D4229BD2CCB36FF0046602D /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9D58D7242CC9BEDA00C31811 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
 		9D58D7252CC9BEDA00C31811 /* FirebaseDatabase */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9D58D7242CC9BEDA00C31811 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseDatabase;
+		};
+		9DA77E842CCB2D3C00ABECC5 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9D58D7242CC9BEDA00C31811 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		9DA77E862CCB2D3C00ABECC5 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9D58D7242CC9BEDA00C31811 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		9DA77E882CCB2D3C00ABECC5 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9D58D7242CC9BEDA00C31811 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
