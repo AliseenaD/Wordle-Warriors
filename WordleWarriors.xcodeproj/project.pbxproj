@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2EB0E8042CD0166200A91900 /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB0E8032CD0166200A91900 /* KeyboardView.swift */; };
+		2EB0E8062CD0168400A91900 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB0E8052CD0168400A91900 /* KeyboardViewController.swift */; };
+		2EB0E8082CD0169E00A91900 /* GameBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB0E8072CD0169E00A91900 /* GameBoardViewController.swift */; };
+		2EB0E80A2CD016B700A91900 /* GameBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB0E8092CD016B700A91900 /* GameBoardView.swift */; };
 		9D4229BE2CCB36FF0046602D /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9D4229BD2CCB36FF0046602D /* FirebaseCore */; };
 		9D58D7232CC9BC5600C31811 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D58D7222CC9BC5500C31811 /* GoogleService-Info.plist */; };
 		9D58D7262CC9BEDA00C31811 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 9D58D7252CC9BEDA00C31811 /* FirebaseDatabase */; };
@@ -28,6 +32,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2EB0E8032CD0166200A91900 /* KeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardView.swift; sourceTree = "<group>"; };
+		2EB0E8052CD0168400A91900 /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
+		2EB0E8072CD0169E00A91900 /* GameBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardViewController.swift; sourceTree = "<group>"; };
+		2EB0E8092CD016B700A91900 /* GameBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardView.swift; sourceTree = "<group>"; };
 		9D58D7222CC9BC5500C31811 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F2F94F412CC8159E00642EDC /* WordleWarriors.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordleWarriors.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2F94F442CC8159E00642EDC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -61,6 +69,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2EB0E80B2CD016CD00A91900 /* Core Game */ = {
+			isa = PBXGroup;
+			children = (
+				2EB0E8032CD0166200A91900 /* KeyboardView.swift */,
+				2EB0E8052CD0168400A91900 /* KeyboardViewController.swift */,
+				2EB0E8072CD0169E00A91900 /* GameBoardViewController.swift */,
+				2EB0E8092CD016B700A91900 /* GameBoardView.swift */,
+			);
+			path = "Core Game";
+			sourceTree = "<group>";
+		};
 		F2F94F382CC8159E00642EDC = {
 			isa = PBXGroup;
 			children = (
@@ -91,6 +110,7 @@
 				F2F94F4F2CC8159F00642EDC /* LaunchScreen.storyboard */,
 				F2F94F522CC8159F00642EDC /* Info.plist */,
 				9D58D7222CC9BC5500C31811 /* GoogleService-Info.plist */,
+				2EB0E80B2CD016CD00A91900 /* Core Game */,
 			);
 			path = WordleWarriors;
 			sourceTree = "<group>";
@@ -214,13 +234,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				F2F94F682CC8323C00642EDC /* SignupView.swift in Sources */,
+				2EB0E8082CD0169E00A91900 /* GameBoardViewController.swift in Sources */,
+				2EB0E8062CD0168400A91900 /* KeyboardViewController.swift in Sources */,
 				F2F94F492CC8159E00642EDC /* ViewController.swift in Sources */,
 				F2F94F662CC8321200642EDC /* LoginController.swift in Sources */,
+				2EB0E8042CD0166200A91900 /* KeyboardView.swift in Sources */,
 				F2F94F6A2CC8324C00642EDC /* SignupController.swift in Sources */,
 				F2F94F5A2CC816C600642EDC /* MainView.swift in Sources */,
 				F2F94F452CC8159E00642EDC /* AppDelegate.swift in Sources */,
 				F2F94F642CC831FC00642EDC /* LoginView.swift in Sources */,
 				F2F94F472CC8159E00642EDC /* SceneDelegate.swift in Sources */,
+				2EB0E80A2CD016B700A91900 /* GameBoardView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
