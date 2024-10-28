@@ -1,3 +1,4 @@
 # Ignore Pods folder (CocoaPods dependencies)
 /Pods/
 
+.DS_Store
