@@ -16,6 +16,8 @@ class LoginController: UIViewController {
         super.viewDidLoad()
         view = loginView
         loginView.playButton.addTarget(self, action: #selector(onButtonPlayTapped), for: .touchUpInside)
+        
+        loginView.cancelButton.addTarget(self, action: #selector(onButtonCancelTapped), for: .touchUpInside)
     }
     
     @objc func onButtonPlayTapped() {
@@ -25,6 +27,10 @@ class LoginController: UIViewController {
             } else {
                 self.showAlert(message: "Please enter both email and password.")
             }
+    }
+    
+    @objc func onButtonCancelTapped() {
+        self.navigationController?.popViewController(animated: true)
     }
     
     func signInToFirebase(email: String, password: String) {
