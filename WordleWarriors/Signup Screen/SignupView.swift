@@ -9,15 +9,15 @@ import UIKit
 
 class SignupView: UIView {
     
-    private let gradientLayer = CAGradientLayer()
-    private let containerView = UIView()
-    private let titleLabel = UILabel()
-    private let nameTextField = UITextField()
-    private let nameLabel = UILabel()
-    private let emailTextField = UITextField()
-    private let emailLabel = UILabel()
-    private let passwordTextField = UITextField()
-    private let passwordLabel = UILabel()
+    let gradientLayer = CAGradientLayer()
+    let containerView = UIView()
+    let titleLabel = UILabel()
+    let nameTextField = UITextField()
+    let nameLabel = UILabel()
+    let emailTextField = UITextField()
+    let emailLabel = UILabel()
+    let passwordTextField = UITextField()
+    let passwordLabel = UILabel()
     let playButton = UIButton(type: .system)
     let cancelButton = UIButton(type: .system)
 
@@ -128,6 +128,7 @@ class SignupView: UIView {
         passwordTextField.borderStyle = .none
         passwordTextField.layer.cornerRadius = 20
         passwordTextField.layer.masksToBounds = true
+        passwordTextField.isSecureTextEntry = true
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
         addSubview(passwordTextField)
     }
