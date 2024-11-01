@@ -41,7 +41,9 @@ class LoginController: UIViewController {
             } else {
                 print("User authenticated successfully")
                 self.clearSignupFields()
-                self.navigationController?.popViewController(animated: true)
+                // Create an instance of GameBoardViewController
+                let gameBoardVC = GameBoardViewController()
+                self.navigationController?.pushViewController(gameBoardVC, animated: true)
             }
         }
     }

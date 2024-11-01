@@ -69,15 +69,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2EB0E80B2CD016CD00A91900 /* Core Game */ = {
+		2EB0E80B2CD016CD00A91900 /* Game Screen */ = {
 			isa = PBXGroup;
 			children = (
-				2EB0E8032CD0166200A91900 /* KeyboardView.swift */,
-				2EB0E8052CD0168400A91900 /* KeyboardViewController.swift */,
-				2EB0E8072CD0169E00A91900 /* GameBoardViewController.swift */,
-				2EB0E8092CD016B700A91900 /* GameBoardView.swift */,
+				9DDEF62C2CD56F2100B1A8A3 /* Controllers */,
+				9DDEF62B2CD56F1500B1A8A3 /* Views */,
 			);
-			path = "Core Game";
+			path = "Game Screen";
+			sourceTree = "<group>";
+		};
+		9DDEF62B2CD56F1500B1A8A3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2EB0E8092CD016B700A91900 /* GameBoardView.swift */,
+				2EB0E8032CD0166200A91900 /* KeyboardView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		9DDEF62C2CD56F2100B1A8A3 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				2EB0E8072CD0169E00A91900 /* GameBoardViewController.swift */,
+				2EB0E8052CD0168400A91900 /* KeyboardViewController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		F2F94F382CC8159E00642EDC = {
@@ -110,7 +126,7 @@
 				F2F94F4F2CC8159F00642EDC /* LaunchScreen.storyboard */,
 				F2F94F522CC8159F00642EDC /* Info.plist */,
 				9D58D7222CC9BC5500C31811 /* GoogleService-Info.plist */,
-				2EB0E80B2CD016CD00A91900 /* Core Game */,
+				2EB0E80B2CD016CD00A91900 /* Game Screen */,
 			);
 			path = WordleWarriors;
 			sourceTree = "<group>";

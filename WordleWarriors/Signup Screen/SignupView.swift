@@ -102,6 +102,8 @@ class SignupView: UIView {
     //setup email field
     private func setupEmailTextField() {
         emailTextField.font = UIFont.systemFont(ofSize: 18)
+        emailTextField.keyboardType = .emailAddress
+        emailTextField.autocapitalizationType = .none
         emailTextField.textColor = .black
         emailTextField.backgroundColor = .white
         emailTextField.borderStyle = .none

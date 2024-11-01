@@ -58,8 +58,10 @@ class SignupController: UIViewController {
                 let errorMessage = error.localizedDescription
                 self.showAlert(message: errorMessage)
             }else{
-                self.navigationController?.popViewController(animated: true)
                 self.clearSignupFields()
+                // Create an instance of GameBoardViewController
+                let gameBoardVC = GameBoardViewController()
+                self.navigationController?.pushViewController(gameBoardVC, animated: true)
             }
         })
     }

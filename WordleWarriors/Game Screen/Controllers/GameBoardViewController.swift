@@ -15,17 +15,32 @@ class GameBoardViewController: UIViewController {
     var currentRow = 0
     var currentTile = 0
     var targetWord = "swift" // WILL HAVE TO FIX THIS TO MAKE IT RANDOM AT SOME POINT
+    
     var keyboardViewController: KeyboardViewController!
     let boardScreen = GameBoardView()
     
     override func loadView() {
         view = boardScreen
+        
+        // Hide the back button
+        self.navigationItem.hidesBackButton = true
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .lightGray
+        
+        // Initialize the keyboard controller and set up delegation
+        keyboardViewController = KeyboardViewController()
+        keyboardViewController.delegate = self
+        
+        // Setup the keyboard
+        setupKeyboard()
+        
+        // Reset the game state
+        currentRow = 0
+        currentTile = 0
     }
     
     // Setup the keyboard

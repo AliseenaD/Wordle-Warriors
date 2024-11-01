@@ -20,16 +20,14 @@ class KeyboardView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .systemGray // Can change background color later
-        
-        // Setup the keys
+        backgroundColor = .clear
+        setupKeys()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // Function that will setup the keys
     func setupKeys() {
         // Create each of the keyboard rows
         for (i, row) in letters.enumerated() {
@@ -60,7 +58,7 @@ class KeyboardView: UIView {
                 stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
                 stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
                 stackView.topAnchor.constraint(equalTo: topAnchor, constant: CGFloat(i * 40 + 10))
-                ])
+            ])
         }
     }
     
