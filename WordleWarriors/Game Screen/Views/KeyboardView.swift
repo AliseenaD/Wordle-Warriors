@@ -45,7 +45,12 @@ class KeyboardView: UIView {
                 button.setTitleColor(.label, for: .normal)
                 button.backgroundColor = .systemGray5
                 button.layer.cornerRadius = 5
-                button.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
+                // Set smaller font for the "ENTER" key
+                if letter == "ENTER" {
+                    button.titleLabel?.font = .systemFont(ofSize: 10, weight: .medium)
+                } else {
+                    button.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
+                }
                 stackView.addArrangedSubview(button)
                 rowButtons.append(button)
             }
