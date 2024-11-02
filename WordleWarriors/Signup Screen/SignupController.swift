@@ -58,8 +58,10 @@ class SignupController: UIViewController {
                 let errorMessage = error.localizedDescription
                 self.showAlert(message: errorMessage)
             }else{
-                self.navigationController?.popViewController(animated: true)
                 self.clearSignupFields()
+                // Create an instance of GameBoardViewController
+                let homeScreen = HomeController()
+                self.navigationController?.pushViewController(homeScreen, animated: true)
             }
         })
     }
@@ -68,6 +70,11 @@ class SignupController: UIViewController {
         let alert = UIAlertController(title: "Invalid Input", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         self.present(alert, animated: true)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.hidesBackButton = true
     }
     
     func clearSignupFields(){

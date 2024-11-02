@@ -20,16 +20,14 @@ class KeyboardView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .systemGray // Can change background color later
-        
-        // Setup the keys
+        backgroundColor = .clear
+        setupKeys()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // Function that will setup the keys
     func setupKeys() {
         // Create each of the keyboard rows
         for (i, row) in letters.enumerated() {
@@ -47,7 +45,12 @@ class KeyboardView: UIView {
                 button.setTitleColor(.label, for: .normal)
                 button.backgroundColor = .systemGray5
                 button.layer.cornerRadius = 5
-                button.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
+                // Set smaller font for the "ENTER" key
+                if letter == "ENTER" {
+                    button.titleLabel?.font = .systemFont(ofSize: 10, weight: .medium)
+                } else {
+                    button.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
+                }
                 stackView.addArrangedSubview(button)
                 rowButtons.append(button)
             }
@@ -60,7 +63,7 @@ class KeyboardView: UIView {
                 stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
                 stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
                 stackView.topAnchor.constraint(equalTo: topAnchor, constant: CGFloat(i * 40 + 10))
-                ])
+            ])
         }
     }
     
