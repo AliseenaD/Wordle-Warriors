@@ -16,6 +16,8 @@ class LoginController: UIViewController {
         super.viewDidLoad()
         view = loginView
         loginView.playButton.addTarget(self, action: #selector(onButtonPlayTapped), for: .touchUpInside)
+        
+        loginView.cancelButton.addTarget(self, action: #selector(onButtonCancelTapped), for: .touchUpInside)
     }
     
     @objc func onButtonPlayTapped() {
@@ -27,6 +29,10 @@ class LoginController: UIViewController {
             }
     }
     
+    @objc func onButtonCancelTapped() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     func signInToFirebase(email: String, password: String) {
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error = error as NSError? {
@@ -35,7 +41,9 @@ class LoginController: UIViewController {
             } else {
                 print("User authenticated successfully")
                 self.clearSignupFields()
-                self.navigationController?.popViewController(animated: true)
+                // Create an instance of GameBoardViewController
+                let homeScreen = HomeController()
+                self.navigationController?.pushViewController(homeScreen, animated: true)
             }
         }
     }
@@ -44,6 +52,11 @@ class LoginController: UIViewController {
         let alert = UIAlertController(title: "Authentication Error", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         self.present(alert, animated: true)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.hidesBackButton = true
     }
     
     func clearSignupFields(){
