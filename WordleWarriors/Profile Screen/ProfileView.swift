@@ -14,8 +14,8 @@ class ProfileView: UIView {
     let profilePhotoButton = UIButton()
     let usernameLabel = UILabel()
     let usernameTextField = UITextField()
-    let passwordLabel = UILabel()
-    let passwordTextField = UITextField()
+    let emailLabel = UILabel()
+    let emailValueLabel = UILabel()
     let saveChangesButton = UIButton(type: .system)
 
     override init(frame: CGRect) {
@@ -25,8 +25,8 @@ class ProfileView: UIView {
         setupProfilePhotoButton()
         setupUsernameLabel()
         setupUsernameTextField()
-        setupPasswordLabel()
-        setupPasswordTextField()
+        setupEmailLabel()
+        setupEmailValueLabel()
         setupSaveChangesButton()
         initConstraints()
     }
@@ -68,7 +68,7 @@ class ProfileView: UIView {
     }
 
     private func setupUsernameLabel() {
-        usernameLabel.text = "Change Username:"
+        usernameLabel.text = "Username:"
         usernameLabel.font = UIFont(name: "AvenirNext-Bold", size: 22)
         usernameLabel.textColor = .white
         usernameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -79,31 +79,28 @@ class ProfileView: UIView {
         usernameTextField.font = UIFont.systemFont(ofSize: 18)
         usernameTextField.textColor = .black
         usernameTextField.backgroundColor = .white
-        usernameTextField.borderStyle = .none
-        usernameTextField.layer.cornerRadius = 20
+        usernameTextField.borderStyle = .roundedRect
+        usernameTextField.placeholder = "Current Username" // Placeholder updated dynamically
+        usernameTextField.layer.cornerRadius = 10
         usernameTextField.layer.masksToBounds = true
         usernameTextField.translatesAutoresizingMaskIntoConstraints = false
         addSubview(usernameTextField)
     }
 
-    private func setupPasswordLabel() {
-        passwordLabel.text = "Change Password:"
-        passwordLabel.font = UIFont(name: "AvenirNext-Bold", size: 22)
-        passwordLabel.textColor = .white
-        passwordLabel.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(passwordLabel)
+    private func setupEmailLabel() {
+        emailLabel.text = "Email:"
+        emailLabel.font = UIFont(name: "AvenirNext-Bold", size: 22)
+        emailLabel.textColor = .white
+        emailLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(emailLabel)
     }
 
-    private func setupPasswordTextField() {
-        passwordTextField.font = UIFont.systemFont(ofSize: 18)
-        passwordTextField.textColor = .black
-        passwordTextField.backgroundColor = .white
-        passwordTextField.borderStyle = .none
-        passwordTextField.layer.cornerRadius = 20
-        passwordTextField.layer.masksToBounds = true
-        passwordTextField.isSecureTextEntry = true
-        passwordTextField.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(passwordTextField)
+    private func setupEmailValueLabel() {
+        emailValueLabel.font = UIFont.systemFont(ofSize: 18)
+        emailValueLabel.textColor = .white
+        emailValueLabel.textAlignment = .left
+        emailValueLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(emailValueLabel)
     }
 
     private func setupSaveChangesButton() {
@@ -135,15 +132,14 @@ class ProfileView: UIView {
             usernameTextField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40),
             usernameTextField.heightAnchor.constraint(equalToConstant: 40),
 
-            passwordLabel.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: 20),
-            passwordLabel.leadingAnchor.constraint(equalTo: usernameTextField.leadingAnchor),
+            emailLabel.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: 20),
+            emailLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor),
 
-            passwordTextField.topAnchor.constraint(equalTo: passwordLabel.bottomAnchor, constant: 5),
-            passwordTextField.leadingAnchor.constraint(equalTo: passwordLabel.leadingAnchor),
-            passwordTextField.trailingAnchor.constraint(equalTo: usernameTextField.trailingAnchor),
-            passwordTextField.heightAnchor.constraint(equalToConstant: 40),
+            emailValueLabel.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 5),
+            emailValueLabel.leadingAnchor.constraint(equalTo: emailLabel.leadingAnchor),
+            emailValueLabel.trailingAnchor.constraint(equalTo: usernameTextField.trailingAnchor),
 
-            saveChangesButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 30),
+            saveChangesButton.topAnchor.constraint(equalTo: emailValueLabel.bottomAnchor, constant: 30),
             saveChangesButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             saveChangesButton.widthAnchor.constraint(equalToConstant: 200),
             saveChangesButton.heightAnchor.constraint(equalToConstant: 50)

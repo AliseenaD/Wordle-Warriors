@@ -20,7 +20,9 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         view = profileView
 
         profileView.backButton.addTarget(self, action: #selector(onBackButtonTapped), for: .touchUpInside)
+        profileView.saveChangesButton.addTarget(self, action: #selector(onSaveChangesTapped), for: .touchUpInside)
         profileView.profilePhotoButton.addTarget(self, action: #selector(onProfilePhotoTapped), for: .touchUpInside)
+
         setupLoadingIndicator()
     }
     
@@ -28,6 +30,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         super.viewWillAppear(animated)
         self.navigationItem.hidesBackButton = true
         fetchProfileImage()
+        fetchUserData()
     }
     
     private func setupLoadingIndicator() {
@@ -42,8 +45,57 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         profileView.profilePhotoButton.isHidden = true
     }
 
+    private func fetchUserData() {
+        guard let user = Auth.auth().currentUser else {
+            profileView.usernameTextField.placeholder = "Not Logged In"
+            profileView.emailValueLabel.text = "Not Logged In"
+            return
+        }
+
+        // Fetch and display username and email
+        profileView.usernameTextField.placeholder = user.displayName ?? "Not set"
+        profileView.emailValueLabel.text = user.email ?? "Not set"
+    }
+
     @objc private func onBackButtonTapped() {
         self.navigationController?.popViewController(animated: true)
+    }
+
+    @objc private func onSaveChangesTapped() {
+        guard let newUsername = profileView.usernameTextField.text, !newUsername.isEmpty else {
+            print("Error: Username cannot be empty")
+            return
+        }
+        
+        guard let user = Auth.auth().currentUser else {
+            print("Error: No authenticated user")
+            return
+        }
+
+        // Update Firestore with new username
+        let db = Firestore.firestore()
+        db.collection("users").document(user.uid).setData(["username": newUsername], merge: true) { error in
+            if let error = error {
+                print("Error updating username in Firestore: \(error.localizedDescription)")
+            } else {
+                print("Username successfully updated in Firestore")
+            }
+        }
+
+        // Update Firebase Auth Profile
+        let changeRequest = user.createProfileChangeRequest()
+        changeRequest.displayName = newUsername
+        changeRequest.commitChanges { error in
+            if let error = error {
+                print("Error updating username in FirebaseAuth: \(error.localizedDescription)")
+            } else {
+                print("Username successfully updated in FirebaseAuth")
+                DispatchQueue.main.async {
+                    self.profileView.usernameTextField.placeholder = newUsername
+                    self.profileView.usernameTextField.text = "" // Clear text field after save
+                }
+            }
+        }
     }
 
     @objc private func onProfilePhotoTapped() {
