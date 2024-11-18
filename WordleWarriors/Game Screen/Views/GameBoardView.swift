@@ -2,6 +2,9 @@ import UIKit
 
 class GameBoardView: UIView {
     
+    // Label for the timer
+    let timerLabel = UILabel()
+    
     private let gradientLayer = CAGradientLayer()
     let wordLength = 5
     let maxAttempts = 6
@@ -14,6 +17,7 @@ class GameBoardView: UIView {
         setupGradient()
         setupBackButton()
         setupBoard()
+        setupTimerLabel()
     }
     
     required init?(coder: NSCoder) {
@@ -28,6 +32,22 @@ class GameBoardView: UIView {
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
         layer.insertSublayer(gradientLayer, at: 0)
+    }
+    
+    // Set up the timer label
+    private func setupTimerLabel() {
+        timerLabel.textColor = .white
+        timerLabel.font = UIFont.monospacedDigitSystemFont(ofSize: 26, weight: .bold)
+        timerLabel.textAlignment = .center
+        timerLabel.text = "00:00:00"
+        timerLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(timerLabel)
+        
+        NSLayoutConstraint.activate([
+            timerLabel.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 16),
+            timerLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            timerLabel.heightAnchor.constraint(equalToConstant: 32)
+        ])
     }
     
     private func setupBackButton() {
