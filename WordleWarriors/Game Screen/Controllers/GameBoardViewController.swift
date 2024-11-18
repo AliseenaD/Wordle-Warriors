@@ -9,13 +9,22 @@ import Foundation
 import UIKit
 
 class GameBoardViewController: UIViewController {
-
+    
     // Properties for the controller
     let wordLength = 5
     let maxGuesses = 6
     var currentRow = 0
     var currentTile = 0
     var targetWord = "swift" // WILL HAVE TO FIX THIS TO MAKE IT RANDOM AT SOME POINT
+    
+    // Timer properties
+    var startTime: Date?
+    var displayLink: CADisplayLink?
+    // To keep track of time if we are resuming a game
+    var elapsedTimeBeforePause: TimeInterval = 0
+    
+    // Game is complete property
+    var gameIsComplete = false
     
     var keyboardViewController: KeyboardViewController!
     let boardScreen = GameBoardView()
@@ -31,7 +40,7 @@ class GameBoardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = .lightGray
         
         // Initialize the keyboard controller and set up delegation
@@ -44,10 +53,224 @@ class GameBoardViewController: UIViewController {
         // Reset the game state
         currentRow = 0
         currentTile = 0
+        gameIsComplete = false
+        
+        // Check if theres a saved game and timer and begin
+        loadGameState()
+    }
+    
+    // Loads previous game state
+    func loadGameState() {
+        let defaults = UserDefaults.standard
+        
+        // Load the timer state properly
+        if let savedElapsedTime = defaults.object(forKey: "elapsedTime") as? TimeInterval {
+            elapsedTimeBeforePause = savedElapsedTime
+            startTime = Date()
+        }
+        else {
+            // If no saved time then start from 0
+            elapsedTimeBeforePause = 0
+            startTime = Date()
+        }
+        startTimer()
+        
+        // Load current game position
+        currentRow = defaults.integer(forKey: "currentRow")
+        currentTile = defaults.integer(forKey: "currentTile")
+        
+        // Load tiles state on board
+        if let tilesData = defaults.array(forKey: "tilesData") as? [[String: Any]] {
+            var index = 0
+            for row in 0..<maxGuesses {
+                for col in 0..<wordLength {
+                    if index < tilesData.count {
+                        let tileData = tilesData[index]
+                        let tile = boardScreen.tiles[row][col]
+                        // Restore the text
+                        tile.text = tileData["text"] as? String
+                        // Restore color based on saved state
+                        if let state = tileData["state"] as? String {
+                            switch state {
+                            case "correct":
+                                tile.backgroundColor = .systemGreen
+                                tile.textColor = .white
+                            case "wrongPosition":
+                                tile.backgroundColor = .systemOrange
+                                tile.textColor = .white
+                            case "wrong":
+                                tile.backgroundColor = .systemRed
+                                tile.textColor = .white
+                            default:
+                                tile.backgroundColor = .systemGray6
+                                tile.textColor = .black
+                            }
+                        }
+                    }
+                    index += 1
+                }
+            }
+        }
+        
+        // Now also load in the keyboard state
+        if let keyboardData = defaults.dictionary(forKey: "keyboardData") as? [String: String] {
+            for row in keyboardViewController.keyboardScreen.buttons {
+                for button in row {
+                    if let letter = button.title(for: .normal)?.lowercased(),
+                       let state = keyboardData[letter] {
+                        switch state {
+                        case "correct":
+                            button.backgroundColor = .systemGreen
+                            button.setTitleColor(.white, for: .normal)
+                        case "wrongPosition":
+                            button.backgroundColor = .systemOrange
+                            button.setTitleColor(.white, for: .normal)
+                        case "wrong":
+                            button.backgroundColor = .systemGray
+                            button.setTitleColor(.white, for: .normal)
+                        default:
+                            button.backgroundColor = .systemGray5
+                            button.setTitleColor(.label, for: .normal)
+                            
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // Reset the game
+    func resetGame() {
+        // Clear saved game state
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: "elapsedTime")
+        defaults.removeObject(forKey: "currentRow")
+        defaults.removeObject(forKey: "currentTile")
+        defaults.removeObject(forKey: "tilesData")
+        defaults.removeObject(forKey: "keyboardData")
+        
+        // Reset timer values
+        elapsedTimeBeforePause = 0
+        startTime = nil
+        boardScreen.timerLabel.text = "00:00.000"
+        
+        // Reset game position
+        currentRow = 0
+        currentTile = 0
+        
+        // Reset all tile colors and text
+        for row in boardScreen.tiles {
+            for tile in row {
+                tile.backgroundColor = .systemGray6
+                tile.textColor = .black
+                tile.text = ""
+            }
+        }
+        
+        // Reset all keyboard buttons
+        for row in keyboardViewController.keyboardScreen.buttons {
+            for button in row {
+                button.backgroundColor = .systemGray5
+                button.setTitleColor(.label, for: .normal)
+            }
+        }
+    }
+    
+    // Save the current time of the game as well as all of the guesses
+    func saveGameState() {
+        let defaults = UserDefaults.standard
+        // Save the current time
+        let currentElapsedTime = getTotalElapsedTime()
+        defaults.set(currentElapsedTime, forKey: "elapsedTime")
+        
+        // Save the current position
+        defaults.set(currentRow, forKey: "currentRow")
+        defaults.set(currentTile, forKey: "currentTile")
+        
+        // Save the state of all of the tiles as well
+        var tilesData: [[String: Any]] = []
+        for row in boardScreen.tiles {
+            for tile in row {
+                var tileData: [String: Any] = [
+                    "text": tile.text ?? "",
+                ]
+                
+                // Save the state basedon the background color
+                if tile.backgroundColor == .systemGreen {
+                    tileData["state"] = "correct"
+                }
+                else if tile.backgroundColor == .systemOrange {
+                    tileData["state"] = "wrongPosition"
+                }
+                else if tile.backgroundColor == .systemRed {
+                    tileData["state"] = "wrong"
+                }
+                else {
+                    tileData["state"] = "empty"
+                }
+                tilesData.append(tileData)
+            }
+        }
+        defaults.set(tilesData, forKey: "tilesData")
+        
+        // Now also save the keyboard state
+        var keyboardData: [String: String] = [:]
+        for row in keyboardViewController.keyboardScreen.buttons {
+            for button in row {
+                if let letter = button.title(for: .normal)?.lowercased() {
+                    if button.backgroundColor == .systemGreen {
+                        keyboardData[letter] = "correct"
+                    } else if button.backgroundColor == .systemOrange {
+                        keyboardData[letter] = "wrongPosition"
+                    } else if button.backgroundColor == .systemGray {
+                        keyboardData[letter] = "wrong"
+                    }
+                }
+            }
+        }
+        defaults.set(keyboardData, forKey: "keyboardData")
+    }
+    
+    // Function to get the total elapsed time
+    func getTotalElapsedTime() -> TimeInterval {
+        var totalTime = elapsedTimeBeforePause
+        if let startTime = startTime {
+            totalTime += Date().timeIntervalSince(startTime)
+        }
+        return totalTime
     }
     
     @objc private func onBackButtonTapped() {
+        stopTimer()
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    // Function to start the timer
+    private func startTimer() {
+        displayLink = CADisplayLink(target: self, selector: #selector(updateTimer))
+        displayLink?.preferredFrameRateRange = CAFrameRateRange(minimum: 60, maximum: 60)
+        displayLink?.add(to: .current, forMode: .common)
+    }
+    
+    // Update the timer numbers
+    @objc func updateTimer() {
+        let totalTime = getTotalElapsedTime()
+        let minutes = Int(totalTime) / 60
+        let seconds = Int(totalTime) % 60
+        let millis = Int((totalTime.truncatingRemainder(dividingBy: 1)) * 1000)
+        boardScreen.timerLabel.text = String(format: "%02d:%02d.%03d", minutes, seconds, millis)
+        
+    }
+    
+    // Stop the timer
+    func stopTimer() {
+        let totalTime = getTotalElapsedTime()
+        elapsedTimeBeforePause = totalTime
+        startTime = nil
+        
+        displayLink?.invalidate()
+        displayLink = nil
+        saveGameState()
     }
     
     // Setup the keyboard
@@ -190,11 +413,34 @@ class GameBoardViewController: UIViewController {
                 
                 // Check if user won or lost
                 if guess == self.targetWord {
+                    // Stop the timer and clear the user default
+                    let finalTime = self.boardScreen.timerLabel.text ?? "00:00:00"
+                    print("Game completed in: \(finalTime)")
+                    // Stop timer and set game is complete to true so that the game will reset after leaving view
+                    self.stopTimer()
+                    self.gameIsComplete = true
+                    
                     // WE WILL NEED TO ADD SOME WINNING FUNCTIONALITY
                 } else if self.currentRow >= self.maxGuesses {
+                    // Stop timer and set game is complete to true so that the game will reset after leaving view
+                    self.stopTimer()
+                    self.gameIsComplete = true
                     // WE WILL NEED TO ADD SOME LOSING FUNCTIONALITY
                 }
             }
+        }
+    }
+    
+    // Clean up when view is going away
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        stopTimer()
+        // If the game has been completed then reset otherwise save the current state of the game
+        if gameIsComplete {
+            resetGame()
+        }
+        else {
+            saveGameState()
         }
     }
 }
