@@ -81,48 +81,10 @@ extension GameBoardViewController{
         }
     }
 
-
-    // Example word generation function
     func generateRandomWord(completion: @escaping (String?) -> Void) {
-        // Define the API URL
-        guard let url = URL(string: "https://random-word-api.herokuapp.com/word?number=1&length=5") else {
-            completion(nil)
-            return
-        }
-        
-        // Create the URLSession task
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error {
-                print("Error fetching word: \(error.localizedDescription)")
-                completion(nil)
-                return
-            }
-            
-            guard let data = data else {
-                print("No data received.")
-                completion(nil)
-                return
-            }
-            
-            do {
-                // Parse the JSON response, expecting an array of strings
-                if let words = try JSONSerialization.jsonObject(with: data, options: []) as? [String],
-                   let randomWord = words.first {
-                    completion(randomWord) // Return the random word
-                } else {
-                    print("Unable to parse response.")
-                    completion(nil)
-                }
-            } catch {
-                print("JSON parsing error: \(error.localizedDescription)")
-                completion(nil)
-            }
-        }
-        
-        // Start the task
-        task.resume()
+        let randomWord = WordManager.shared.generateRandomWord()
+        completion(randomWord)
     }
-    
 }
 
 /**

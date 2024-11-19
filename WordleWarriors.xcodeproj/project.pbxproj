@@ -18,6 +18,8 @@
 		9DA77E852CCB2D3C00ABECC5 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9DA77E842CCB2D3C00ABECC5 /* FirebaseAuth */; };
 		9DA77E872CCB2D3C00ABECC5 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9DA77E862CCB2D3C00ABECC5 /* FirebaseFirestore */; };
 		9DA77E892CCB2D3C00ABECC5 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 9DA77E882CCB2D3C00ABECC5 /* FirebaseStorage */; };
+		9DABEBF02CED2CF700915093 /* words.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9DABEBEF2CED2CF700915093 /* words.txt */; };
+		9DABEBF22CED2F7B00915093 /* WordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DABEBF12CED2F7A00915093 /* WordManager.swift */; };
 		F2631D292CE932230017EFBF /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2631D282CE932230017EFBF /* ProfileViewController.swift */; };
 		F2631D2B2CE932340017EFBF /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2631D2A2CE932340017EFBF /* ProfileView.swift */; };
 		F2631D2E2CEAA5A00017EFBF /* AboutUsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2631D2D2CEAA5A00017EFBF /* AboutUsView.swift */; };
@@ -51,6 +53,8 @@
 		2EB0E8092CD016B700A91900 /* GameBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardView.swift; sourceTree = "<group>"; };
 		9D4F9CDA2CEC0153006C111B /* GameFirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameFirebaseManager.swift; sourceTree = "<group>"; };
 		9D4F9CDC2CEC0D55006C111B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		9DABEBEF2CED2CF700915093 /* words.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = words.txt; sourceTree = "<group>"; };
+		9DABEBF12CED2F7A00915093 /* WordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordManager.swift; sourceTree = "<group>"; };
 		F2631D282CE932230017EFBF /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		F2631D2A2CE932340017EFBF /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		F2631D2D2CEAA5A00017EFBF /* AboutUsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutUsView.swift; sourceTree = "<group>"; };
@@ -203,8 +207,10 @@
 				F2F94F4D2CC8159F00642EDC /* Assets.xcassets */,
 				F2F94F4F2CC8159F00642EDC /* LaunchScreen.storyboard */,
 				F2F94F522CC8159F00642EDC /* Info.plist */,
+				9DABEBEF2CED2CF700915093 /* words.txt */,
 				9D4F9CDC2CEC0D55006C111B /* GoogleService-Info.plist */,
 				2EB0E80B2CD016CD00A91900 /* Game Screen */,
+				9DABEBF12CED2F7A00915093 /* WordManager.swift */,
 			);
 			path = WordleWarriors;
 			sourceTree = "<group>";
@@ -318,6 +324,7 @@
 				F2F94F4E2CC8159F00642EDC /* Assets.xcassets in Resources */,
 				9D4F9CDD2CEC0D56006C111B /* GoogleService-Info.plist in Resources */,
 				F2F94F512CC8159F00642EDC /* Base in Resources */,
+				9DABEBF02CED2CF700915093 /* words.txt in Resources */,
 				F2F94F4C2CC8159E00642EDC /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -329,6 +336,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9DABEBF22CED2F7B00915093 /* WordManager.swift in Sources */,
 				F2E54D442CD81A0200C8DA5E /* SettingsView.swift in Sources */,
 				F2F94F682CC8323C00642EDC /* SignupView.swift in Sources */,
 				F2E54D412CD812E900C8DA5E /* HomeView.swift in Sources */,
