@@ -15,7 +15,7 @@ class GameBoardViewController: UIViewController {
     let maxGuesses = 6
     var currentRow = 0
     var currentTile = 0
-    var targetWord = "swift" // WILL HAVE TO FIX THIS TO MAKE IT RANDOM AT SOME POINT
+    var targetWord = ""
     
     // Timer properties
     var startTime: Date?
@@ -57,6 +57,20 @@ class GameBoardViewController: UIViewController {
         
         // Check if theres a saved game and timer and begin
         loadGameState()
+        
+        // Fetch or generate the daily word for the user
+        fetchOrGenerateDailyWord { [weak self] word in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                if let word = word {
+                    self.targetWord = word
+                    print("Daily word set to: \(word)")
+                } else {
+                    self.showAlert(message: "Failed to load daily word. Please try again later.")
+                }
+            }
+        }
     }
     
     // Loads previous game state

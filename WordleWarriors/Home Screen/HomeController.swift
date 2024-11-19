@@ -17,6 +17,7 @@ class HomeController: UIViewController {
         
         homeView.accountButton.addTarget(self, action: #selector(onButtonSettingsTapped), for: .touchUpInside)
         homeView.gameButton.addTarget(self, action: #selector(onButtonPlayTapped), for: .touchUpInside)
+        homeView.leaderboardButton.addTarget(self, action: #selector(onButtonLeaderboardTapped), for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -27,6 +28,11 @@ class HomeController: UIViewController {
     @objc func onButtonPlayTapped() {
         let gameScreen = GameBoardViewController()
         self.navigationController?.pushViewController(gameScreen, animated: true)
+    }
+    
+    @objc func onButtonLeaderboardTapped() {
+        let leaderboardScreen = LeaderboardController()
+        self.navigationController?.pushViewController(leaderboardScreen, animated: true)
     }
     
     @objc func onButtonSettingsTapped() {
