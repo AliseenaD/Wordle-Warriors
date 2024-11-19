@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseFirestore
 
 class SignupController: UIViewController {
     
@@ -42,12 +43,35 @@ class SignupController: UIViewController {
                 if let error = error as NSError? {
                     let errorMessage = error.localizedDescription
                     self.showAlert(message: errorMessage)
-                } else {
-                    self.setNameOfTheUserInFirebaseAuth(name: name)
+                } else if let user = result?.user {
+                    // Add user to Firestore
+                    self.initializeUserInFirestore(userID: user.uid, name: name, email: email)
                 }
             })
         }
     }
+    
+    func initializeUserInFirestore(userID: String, name: String, email: String) {
+        let db = Firestore.firestore()
+        let userData: [String: Any] = [
+            "name": name,
+            "email": email,
+            "totalScore": 0, // Initialize total score to 0
+            "dailyWord": "", // Placeholder for daily word assignment
+            "lastUpdated": FieldValue.serverTimestamp() // Set initial timestamp for daily word tracking
+        ]
+        
+        db.collection("users").document(userID).setData(userData) { error in
+            if let error = error {
+                print("Error creating user in Firestore: \(error.localizedDescription)")
+                self.showAlert(message: "Could not initialize user. Please try again.")
+            } else {
+                print("User initialized in Firestore successfully.")
+                self.setNameOfTheUserInFirebaseAuth(name: name)
+            }
+        }
+    }
+
     
     //MARK: We set the name of the user after we create the account...
     func setNameOfTheUserInFirebaseAuth(name: String){

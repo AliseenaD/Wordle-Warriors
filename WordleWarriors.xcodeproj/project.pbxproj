@@ -12,6 +12,8 @@
 		2EB0E8082CD0169E00A91900 /* GameBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB0E8072CD0169E00A91900 /* GameBoardViewController.swift */; };
 		2EB0E80A2CD016B700A91900 /* GameBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB0E8092CD016B700A91900 /* GameBoardView.swift */; };
 		9D4229BE2CCB36FF0046602D /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9D4229BD2CCB36FF0046602D /* FirebaseCore */; };
+		9D4F9CDB2CEC0153006C111B /* GameFirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D4F9CDA2CEC0153006C111B /* GameFirebaseManager.swift */; };
+		9D4F9CDD2CEC0D56006C111B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D4F9CDC2CEC0D55006C111B /* GoogleService-Info.plist */; };
 		9D58D7262CC9BEDA00C31811 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 9D58D7252CC9BEDA00C31811 /* FirebaseDatabase */; };
 		9DA77E852CCB2D3C00ABECC5 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9DA77E842CCB2D3C00ABECC5 /* FirebaseAuth */; };
 		9DA77E872CCB2D3C00ABECC5 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9DA77E862CCB2D3C00ABECC5 /* FirebaseFirestore */; };
@@ -20,7 +22,6 @@
 		F2631D2B2CE932340017EFBF /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2631D2A2CE932340017EFBF /* ProfileView.swift */; };
 		F2631D2E2CEAA5A00017EFBF /* AboutUsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2631D2D2CEAA5A00017EFBF /* AboutUsView.swift */; };
 		F2631D302CEAA5B20017EFBF /* AboutUsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2631D2F2CEAA5B20017EFBF /* AboutUsController.swift */; };
-		F2631D322CEBD00F0017EFBF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F2631D312CEBD00F0017EFBF /* GoogleService-Info.plist */; };
 		F2E54D3F2CD812DE00C8DA5E /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E54D3E2CD812DE00C8DA5E /* HomeController.swift */; };
 		F2E54D412CD812E900C8DA5E /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E54D402CD812E900C8DA5E /* HomeView.swift */; };
 		F2E54D442CD81A0200C8DA5E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E54D432CD81A0200C8DA5E /* SettingsView.swift */; };
@@ -44,11 +45,12 @@
 		2EB0E8052CD0168400A91900 /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
 		2EB0E8072CD0169E00A91900 /* GameBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardViewController.swift; sourceTree = "<group>"; };
 		2EB0E8092CD016B700A91900 /* GameBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardView.swift; sourceTree = "<group>"; };
+		9D4F9CDA2CEC0153006C111B /* GameFirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameFirebaseManager.swift; sourceTree = "<group>"; };
+		9D4F9CDC2CEC0D55006C111B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F2631D282CE932230017EFBF /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		F2631D2A2CE932340017EFBF /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		F2631D2D2CEAA5A00017EFBF /* AboutUsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutUsView.swift; sourceTree = "<group>"; };
 		F2631D2F2CEAA5B20017EFBF /* AboutUsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutUsController.swift; sourceTree = "<group>"; };
-		F2631D312CEBD00F0017EFBF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F2E54D3E2CD812DE00C8DA5E /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		F2E54D402CD812E900C8DA5E /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		F2E54D432CD81A0200C8DA5E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 			children = (
 				2EB0E8072CD0169E00A91900 /* GameBoardViewController.swift */,
 				2EB0E8052CD0168400A91900 /* KeyboardViewController.swift */,
+				9D4F9CDA2CEC0153006C111B /* GameFirebaseManager.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -181,7 +184,7 @@
 				F2F94F4D2CC8159F00642EDC /* Assets.xcassets */,
 				F2F94F4F2CC8159F00642EDC /* LaunchScreen.storyboard */,
 				F2F94F522CC8159F00642EDC /* Info.plist */,
-				F2631D312CEBD00F0017EFBF /* GoogleService-Info.plist */,
+				9D4F9CDC2CEC0D55006C111B /* GoogleService-Info.plist */,
 				2EB0E80B2CD016CD00A91900 /* Game Screen */,
 			);
 			path = WordleWarriors;
@@ -292,7 +295,7 @@
 			files = (
 				F2F94F602CC825AF00642EDC /* logo.png in Resources */,
 				F2F94F4E2CC8159F00642EDC /* Assets.xcassets in Resources */,
-				F2631D322CEBD00F0017EFBF /* GoogleService-Info.plist in Resources */,
+				9D4F9CDD2CEC0D56006C111B /* GoogleService-Info.plist in Resources */,
 				F2F94F512CC8159F00642EDC /* Base in Resources */,
 				F2F94F4C2CC8159E00642EDC /* Base in Resources */,
 			);
@@ -310,6 +313,7 @@
 				F2E54D412CD812E900C8DA5E /* HomeView.swift in Sources */,
 				2EB0E8082CD0169E00A91900 /* GameBoardViewController.swift in Sources */,
 				2EB0E8062CD0168400A91900 /* KeyboardViewController.swift in Sources */,
+				9D4F9CDB2CEC0153006C111B /* GameFirebaseManager.swift in Sources */,
 				F2E54D462CD81A1300C8DA5E /* SettingsController.swift in Sources */,
 				F2F94F492CC8159E00642EDC /* ViewController.swift in Sources */,
 				F2631D292CE932230017EFBF /* ProfileViewController.swift in Sources */,
