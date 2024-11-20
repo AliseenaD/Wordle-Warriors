@@ -12,9 +12,10 @@
 		2EB0E8082CD0169E00A91900 /* GameBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB0E8072CD0169E00A91900 /* GameBoardViewController.swift */; };
 		2EB0E80A2CD016B700A91900 /* GameBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB0E8092CD016B700A91900 /* GameBoardView.swift */; };
 		9D4229BE2CCB36FF0046602D /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9D4229BD2CCB36FF0046602D /* FirebaseCore */; };
-		9D4F9CDB2CEC0153006C111B /* GameFirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D4F9CDA2CEC0153006C111B /* GameFirebaseManager.swift */; };
+		9D4F9CDB2CEC0153006C111B /* GameStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D4F9CDA2CEC0153006C111B /* GameStateManager.swift */; };
 		9D4F9CDD2CEC0D56006C111B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D4F9CDC2CEC0D55006C111B /* GoogleService-Info.plist */; };
 		9D58D7262CC9BEDA00C31811 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 9D58D7252CC9BEDA00C31811 /* FirebaseDatabase */; };
+		9D9421372CEE7C3A0041BC42 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9421362CEE7C3A0041BC42 /* TimerManager.swift */; };
 		9DA77E852CCB2D3C00ABECC5 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9DA77E842CCB2D3C00ABECC5 /* FirebaseAuth */; };
 		9DA77E872CCB2D3C00ABECC5 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9DA77E862CCB2D3C00ABECC5 /* FirebaseFirestore */; };
 		9DA77E892CCB2D3C00ABECC5 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 9DA77E882CCB2D3C00ABECC5 /* FirebaseStorage */; };
@@ -51,8 +52,9 @@
 		2EB0E8052CD0168400A91900 /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
 		2EB0E8072CD0169E00A91900 /* GameBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardViewController.swift; sourceTree = "<group>"; };
 		2EB0E8092CD016B700A91900 /* GameBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardView.swift; sourceTree = "<group>"; };
-		9D4F9CDA2CEC0153006C111B /* GameFirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameFirebaseManager.swift; sourceTree = "<group>"; };
+		9D4F9CDA2CEC0153006C111B /* GameStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStateManager.swift; sourceTree = "<group>"; };
 		9D4F9CDC2CEC0D55006C111B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		9D9421362CEE7C3A0041BC42 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 		9DABEBEF2CED2CF700915093 /* words.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = words.txt; sourceTree = "<group>"; };
 		9DABEBF12CED2F7A00915093 /* WordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordManager.swift; sourceTree = "<group>"; };
 		F2631D282CE932230017EFBF /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -122,7 +124,8 @@
 			children = (
 				2EB0E8072CD0169E00A91900 /* GameBoardViewController.swift */,
 				2EB0E8052CD0168400A91900 /* KeyboardViewController.swift */,
-				9D4F9CDA2CEC0153006C111B /* GameFirebaseManager.swift */,
+				9D4F9CDA2CEC0153006C111B /* GameStateManager.swift */,
+				9D9421362CEE7C3A0041BC42 /* TimerManager.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -341,9 +344,10 @@
 				F2F94F682CC8323C00642EDC /* SignupView.swift in Sources */,
 				F2E54D412CD812E900C8DA5E /* HomeView.swift in Sources */,
 				2EB0E8082CD0169E00A91900 /* GameBoardViewController.swift in Sources */,
+				9D9421372CEE7C3A0041BC42 /* TimerManager.swift in Sources */,
 				2EB0E8062CD0168400A91900 /* KeyboardViewController.swift in Sources */,
 				F2631D382CED1C290017EFBF /* LeaderboardController.swift in Sources */,
-				9D4F9CDB2CEC0153006C111B /* GameFirebaseManager.swift in Sources */,
+				9D4F9CDB2CEC0153006C111B /* GameStateManager.swift in Sources */,
 				F2E54D462CD81A1300C8DA5E /* SettingsController.swift in Sources */,
 				F2F94F492CC8159E00642EDC /* ViewController.swift in Sources */,
 				F2631D292CE932230017EFBF /* ProfileViewController.swift in Sources */,
