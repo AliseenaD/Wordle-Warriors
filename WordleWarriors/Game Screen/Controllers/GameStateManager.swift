@@ -163,12 +163,14 @@ extension GameBoardViewController{
             
             // If 'dailyGameCompleted' (time last daily game was completed) is not on the same day as 'lastUpdated' (time today's word is created), then user is playing new game
             if let dailyGameCompleted = dailyGameCompleted, !self.areDatesOnSameDay(dailyGameCompleted, lastUpdated), !self.isGameActive {
-                print("New day detected. Clearing game state.")
-                self.clearGameState()
-                // Load timer state
-                self.startTime = Date()
-                self.startTimer()
-                self.isGameActive = true
+                print("New day detected. Clearing game state and starting timer.")
+                self.clearGameState {
+                    DispatchQueue.main.async {
+                        self.startTime = Date()
+                        self.startTimer()
+                        self.isGameActive = true
+                    }
+                }
                 return
             } else if let dailyGameCompleted = dailyGameCompleted, self.areDatesOnSameDay(dailyGameCompleted, lastUpdated) {
                 self.showAlert(message: "User has already played today.")
@@ -263,20 +265,20 @@ extension GameBoardViewController{
         }
     }
 
-    func clearGameState() {
+    func clearGameState(completion: (() -> Void)? = nil) {
         guard let userID = Auth.auth().currentUser?.uid else {
             print("Error: No user is logged in.")
+            completion?()
             return
         }
         
         let userRef = Firestore.firestore().collection("users").document(userID)
         
+        // Reset the UI and state
         DispatchQueue.main.async {
-            // Reset the timer
             self.startTime = nil
             self.stopTimer()
             
-            // Clear the board
             for row in 0..<self.maxGuesses {
                 for col in 0..<self.wordLength {
                     let tile = self.boardScreen.tiles[row][col]
@@ -286,7 +288,6 @@ extension GameBoardViewController{
                 }
             }
             
-            // Clear the keyboard
             for row in self.keyboardViewController.keyboardScreen.buttons {
                 for button in row {
                     button.backgroundColor = .systemGray5
@@ -294,23 +295,20 @@ extension GameBoardViewController{
                 }
             }
             
-            // Reset game state variables
             self.currentRow = 0
             self.currentTile = 0
-            
-            // Clear the user's game state in Firestore
-            userRef.updateData([
-                "gameState": FieldValue.delete()
-            ]) { error in
-                if let error = error {
-                    print("Error clearing game state in Firestore: \(error.localizedDescription)")
-                } else {
-                    print("Game state cleared in Firestore successfully.")
-                }
+        }
+        
+        // Clear Firestore data
+        userRef.updateData(["gameState": FieldValue.delete()]) { error in
+            if let error = error {
+                print("Error clearing game state in Firestore: \(error.localizedDescription)")
+            } else {
+                print("Game state cleared in Firestore successfully.")
             }
+            completion?()
         }
     }
-
     
     func handleGameCompletion(didWin: Bool, attempts: Int, finalTime: String) {
         self.isGameActive = false // Freeze the keyboard
