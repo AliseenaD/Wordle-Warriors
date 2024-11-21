@@ -13,15 +13,11 @@ import FirebaseAuth
 extension GameBoardViewController{
     // Function to get the total elapsed time
     func getTotalElapsedTime() -> TimeInterval {
-        var totalTime = elapsedTimeBeforePause
-        if let startTime = startTime {
-            totalTime += Date().timeIntervalSince(startTime)
-        }
-        return totalTime
+        guard let startTime = startTime else { return 0 }
+        return Date().timeIntervalSince(startTime)
     }
     
     @objc func onBackButtonTapped() {
-        stopTimer()
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -44,10 +40,6 @@ extension GameBoardViewController{
     
     // Stop the timer
     func stopTimer() {
-        let totalTime = getTotalElapsedTime()
-        elapsedTimeBeforePause = totalTime
-        startTime = nil
-        
         displayLink?.invalidate()
         displayLink = nil
         saveGameState()

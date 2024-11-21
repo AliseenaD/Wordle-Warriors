@@ -20,8 +20,6 @@ class GameBoardViewController: UIViewController {
     // Timer properties
     var startTime: Date?
     var displayLink: CADisplayLink?
-    // To keep track of time if we are resuming a game
-    var elapsedTimeBeforePause: TimeInterval = 0
     var isGameActive = false
     var keyboardViewController: KeyboardViewController!
     let boardScreen = GameBoardView()
@@ -80,7 +78,6 @@ class GameBoardViewController: UIViewController {
         defaults.removeObject(forKey: "keyboardData")
         
         // Reset timer values
-        elapsedTimeBeforePause = 0
         startTime = nil
         boardScreen.timerLabel.text = "00:00.000"
         

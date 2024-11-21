@@ -22,7 +22,7 @@ extension GameBoardViewController{
         
         // Save the current position
         let gameState: [String: Any] = [
-            "elapsedTime": elapsedTimeBeforePause,
+            "startTime": self.startTime?.timeIntervalSince1970 ?? Date().timeIntervalSince1970,
             "currentRow": currentRow,
             "currentTile": currentTile
         ]
@@ -116,6 +116,9 @@ extension GameBoardViewController{
             // Return if there's no game state to load (most likely reached if new user)
             guard let gameState = data?["gameState"] as? [String: Any] else {
                 print("No saved game state found.")
+                // Load timer state
+                self.startTime = Date()
+                self.startTimer()
                 self.isGameActive = true
                 return
             }
@@ -128,27 +131,24 @@ extension GameBoardViewController{
                 return
             } else if let dailyGameCompleted = dailyGameCompleted, self.areDatesOnSameDay(dailyGameCompleted, lastUpdated) {
                 self.showAlert(message: "User has already played today.")
+                self.clearGameState()
                 return
             }
             
             // if dailyGameCompleted does NOT exist or if it's not the same day as 'lastUpdated',
             // set isGameActive to True because the user is still playing
-            if data?["dailyGameCompleted"] == nil {
-                print("New user is still playing.")
-                self.isGameActive = true
-            }else if !self.areDatesOnSameDay(dailyGameCompleted!, lastUpdated) {
+            if data?["dailyGameCompleted"] == nil || !self.areDatesOnSameDay(dailyGameCompleted!, lastUpdated) {
                 print("User is still playing.")
                 self.isGameActive = true
             }
             
             DispatchQueue.main.async {
-                // Load timer state
-                if let savedElapsedTime = gameState["elapsedTime"] as? TimeInterval {
-                    self.elapsedTimeBeforePause = savedElapsedTime
-                    self.startTime = Date()
+                // Display timer with appropriate time
+                if let savedStartTime = gameState["startTime"] as? TimeInterval {
+                    self.startTime = Date(timeIntervalSince1970: savedStartTime)
+                    let elapsedTime = Date().timeIntervalSince(self.startTime!)
                 } else {
-                    // If no saved time, start from 0
-                    self.elapsedTimeBeforePause = 0
+                    // If no start time exists, initialize it as now
                     self.startTime = Date()
                 }
                 self.startTimer()
@@ -158,59 +158,64 @@ extension GameBoardViewController{
                 self.currentTile = gameState["currentTile"] as? Int ?? 0
                 
                 // Load tiles state on board
-                if let tilesData = gameState["tilesData"] as? [[String: Any]] {
-                    var index = 0
-                    for row in 0..<self.maxGuesses {
-                        for col in 0..<self.wordLength {
-                            if index < tilesData.count {
-                                let tileData = tilesData[index]
-                                let tile = self.boardScreen.tiles[row][col]
-                                // Restore the text
-                                tile.text = tileData["text"] as? String
-                                // Restore color based on saved state
-                                if let state = tileData["state"] as? String {
-                                    switch state {
-                                    case "correct":
-                                        tile.backgroundColor = .systemGreen
-                                        tile.textColor = .white
-                                    case "wrongPosition":
-                                        tile.backgroundColor = .systemOrange
-                                        tile.textColor = .white
-                                    case "wrong":
-                                        tile.backgroundColor = .systemRed
-                                        tile.textColor = .white
-                                    default:
-                                        tile.backgroundColor = .systemGray6
-                                        tile.textColor = .black
-                                    }
-                                }
+                self.loadTilesAndKeyboardState(gameState: gameState)
+            }
+        }
+    }
+    
+    func loadTilesAndKeyboardState(gameState: [String: Any]?) {
+        // Load tiles state on board
+        if let tilesData = gameState?["tilesData"] as? [[String: Any]] {
+            var index = 0
+            for row in 0..<self.maxGuesses {
+                for col in 0..<self.wordLength {
+                    if index < tilesData.count {
+                        let tileData = tilesData[index]
+                        let tile = self.boardScreen.tiles[row][col]
+                        // Restore the text
+                        tile.text = tileData["text"] as? String
+                        // Restore color based on saved state
+                        if let state = tileData["state"] as? String {
+                            switch state {
+                            case "correct":
+                                tile.backgroundColor = .systemGreen
+                                tile.textColor = .white
+                            case "wrongPosition":
+                                tile.backgroundColor = .systemOrange
+                                tile.textColor = .white
+                            case "wrong":
+                                tile.backgroundColor = .systemRed
+                                tile.textColor = .white
+                            default:
+                                tile.backgroundColor = .systemGray6
+                                tile.textColor = .black
                             }
-                            index += 1
                         }
                     }
+                    index += 1
                 }
-                
-                // Load keyboard state
-                if let keyboardData = gameState["keyboardData"] as? [String: String] {
-                    for row in self.keyboardViewController.keyboardScreen.buttons {
-                        for button in row {
-                            if let letter = button.title(for: .normal)?.lowercased(),
-                               let state = keyboardData[letter] {
-                                switch state {
-                                case "correct":
-                                    button.backgroundColor = .systemGreen
-                                    button.setTitleColor(.white, for: .normal)
-                                case "wrongPosition":
-                                    button.backgroundColor = .systemOrange
-                                    button.setTitleColor(.white, for: .normal)
-                                case "wrong":
-                                    button.backgroundColor = .systemGray
-                                    button.setTitleColor(.white, for: .normal)
-                                default:
-                                    button.backgroundColor = .systemGray5
-                                    button.setTitleColor(.label, for: .normal)
-                                }
-                            }
+            }
+        }
+        
+        // Load keyboard state
+        if let keyboardData = gameState?["keyboardData"] as? [String: String] {
+            for row in self.keyboardViewController.keyboardScreen.buttons {
+                for button in row {
+                    if let letter = button.title(for: .normal)?.lowercased(),
+                       let state = keyboardData[letter] {
+                        switch state {
+                        case "correct":
+                            button.backgroundColor = .systemGreen
+                            button.setTitleColor(.white, for: .normal)
+                        case "wrongPosition":
+                            button.backgroundColor = .systemOrange
+                            button.setTitleColor(.white, for: .normal)
+                        case "wrong":
+                            button.backgroundColor = .systemGray
+                            button.setTitleColor(.white, for: .normal)
+                        default:
+                            button.backgroundColor = .systemGray5
+                            button.setTitleColor(.label, for: .normal)
                         }
                     }
                 }
@@ -228,7 +233,6 @@ extension GameBoardViewController{
         
         DispatchQueue.main.async {
             // Reset the timer
-            self.elapsedTimeBeforePause = 0
             self.startTime = nil
             self.stopTimer()
             
@@ -299,6 +303,15 @@ extension GameBoardViewController{
                 print("Error updating dailyGameCompleted: \(error.localizedDescription)")
             } else {
                 print("Daily game completion time recorded")
+            }
+        }
+        
+        // Reset startTime to 0
+        userRef.updateData(["startTime": 0]) { error in
+            if let error = error {
+                print("Error resetting startTime: \(error.localizedDescription)")
+            } else {
+                print("startTime reset to 0")
             }
         }
     }
