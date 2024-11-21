@@ -49,9 +49,6 @@ class GameBoardViewController: UIViewController {
         currentRow = 0
         currentTile = 0
         
-        // Check if theres a saved game and timer and begin
-        loadGameState()
-        
         // Fetch or generate the daily word for the user
         fetchOrGenerateDailyWord { [weak self] word in
             guard let self = self else { return }
@@ -60,6 +57,9 @@ class GameBoardViewController: UIViewController {
                 if let word = word {
                     self.targetWord = word
                     print("Daily word set to: \(word)")
+                    
+                    // After fetching the daily word, load the game state
+                    self.loadGameState()
                 } else {
                     self.showAlert(message: "Failed to load daily word. Please try again later.")
                 }

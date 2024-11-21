@@ -151,7 +151,7 @@ extension GameBoardViewController{
             let lastUpdated = (data?["lastUpdated"] as? Timestamp)?.dateValue() ?? Date.distantPast
             let dailyGameCompleted = (data?["dailyGameCompleted"] as? Timestamp)?.dateValue()
             
-            // Return if there's no game state to load (most likely reached if new user)
+            // Return if there's no game state to load
             guard let gameState = data?["gameState"] as? [String: Any] else {
                 print("No saved game state found.")
                 // Load timer state
@@ -162,13 +162,15 @@ extension GameBoardViewController{
             }
             
             // If 'dailyGameCompleted' (time last daily game was completed) is not on the same day as 'lastUpdated' (time today's word is created), then user is playing new game
-            if let dailyGameCompleted = dailyGameCompleted, !self.areDatesOnSameDay(dailyGameCompleted, lastUpdated) {
-                print("New day detected. Clearing game state.")
-                self.clearGameState()
-                // Load timer state
-                self.startTime = Date()
-                self.startTimer()
-                self.isGameActive = true
+            if let dailyGameCompleted = dailyGameCompleted, !self.areDatesOnSameDay(dailyGameCompleted, lastUpdated), !self.isGameActive {
+                print("New day detected. Clearing game state and starting timer.")
+                self.clearGameState {
+                    DispatchQueue.main.async {
+                        self.startTime = Date()
+                        self.startTimer()
+                        self.isGameActive = true
+                    }
+                }
                 return
             } else if let dailyGameCompleted = dailyGameCompleted, self.areDatesOnSameDay(dailyGameCompleted, lastUpdated) {
                 self.showAlert(message: "User has already played today.")
@@ -187,7 +189,6 @@ extension GameBoardViewController{
                 // Display timer with appropriate time
                 if let savedStartTime = gameState["startTime"] as? TimeInterval {
                     self.startTime = Date(timeIntervalSince1970: savedStartTime)
-                    let elapsedTime = Date().timeIntervalSince(self.startTime!)
                 } else {
                     // If no start time exists, initialize it as now
                     self.startTime = Date()
@@ -264,20 +265,20 @@ extension GameBoardViewController{
         }
     }
 
-    func clearGameState() {
+    func clearGameState(completion: (() -> Void)? = nil) {
         guard let userID = Auth.auth().currentUser?.uid else {
             print("Error: No user is logged in.")
+            completion?()
             return
         }
         
         let userRef = Firestore.firestore().collection("users").document(userID)
         
+        // Reset the UI and state
         DispatchQueue.main.async {
-            // Reset the timer
             self.startTime = nil
             self.stopTimer()
             
-            // Clear the board
             for row in 0..<self.maxGuesses {
                 for col in 0..<self.wordLength {
                     let tile = self.boardScreen.tiles[row][col]
@@ -287,7 +288,6 @@ extension GameBoardViewController{
                 }
             }
             
-            // Clear the keyboard
             for row in self.keyboardViewController.keyboardScreen.buttons {
                 for button in row {
                     button.backgroundColor = .systemGray5
@@ -295,23 +295,20 @@ extension GameBoardViewController{
                 }
             }
             
-            // Reset game state variables
             self.currentRow = 0
             self.currentTile = 0
-            
-            // Clear the user's game state in Firestore
-            userRef.updateData([
-                "gameState": FieldValue.delete()
-            ]) { error in
-                if let error = error {
-                    print("Error clearing game state in Firestore: \(error.localizedDescription)")
-                } else {
-                    print("Game state cleared in Firestore successfully.")
-                }
+        }
+        
+        // Clear Firestore data
+        userRef.updateData(["gameState": FieldValue.delete()]) { error in
+            if let error = error {
+                print("Error clearing game state in Firestore: \(error.localizedDescription)")
+            } else {
+                print("Game state cleared in Firestore successfully.")
             }
+            completion?()
         }
     }
-
     
     func handleGameCompletion(didWin: Bool, attempts: Int, finalTime: String) {
         self.isGameActive = false // Freeze the keyboard
@@ -399,37 +396,6 @@ extension GameBoardViewController{
                 print("Error resetting startTime: \(error.localizedDescription)")
             } else {
                 print("startTime reset to 0")
-            }
-        }
-    }
-    
-    func canStartNewGame(completion: @escaping (Bool) -> Void) {
-        guard let userID = Auth.auth().currentUser?.uid else {
-            completion(false)
-            return
-        }
-        
-        let userRef = Firestore.firestore().collection("users").document(userID)
-        userRef.getDocument { snapshot, error in
-            if let error = error {
-                print("Error checking game eligibility: \(error.localizedDescription)")
-                completion(false)
-                return
-            }
-            
-            if let data = snapshot?.data() {
-                let lastUpdated = (data["lastUpdated"] as? Timestamp)?.dateValue() ?? Date.distantPast
-                let dailyGameCompleted = (data["dailyGameCompleted"] as? Timestamp)?.dateValue() ?? Date.distantPast
-                
-                let canStart = lastUpdated > dailyGameCompleted
-                completion(canStart)
-                
-                if canStart {
-                    self.isGameActive = true // Reactivate the keyboard
-                }
-            } else {
-                completion(true)
-                self.isGameActive = true // Reactivate the keyboard by default if no data
             }
         }
     }
