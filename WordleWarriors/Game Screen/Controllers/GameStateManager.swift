@@ -127,6 +127,9 @@ extension GameBoardViewController{
             if let dailyGameCompleted = dailyGameCompleted, !self.areDatesOnSameDay(dailyGameCompleted, lastUpdated) {
                 print("New day detected. Clearing game state.")
                 self.clearGameState()
+                // Load timer state
+                self.startTime = Date()
+                self.startTimer()
                 self.isGameActive = true
                 return
             } else if let dailyGameCompleted = dailyGameCompleted, self.areDatesOnSameDay(dailyGameCompleted, lastUpdated) {
