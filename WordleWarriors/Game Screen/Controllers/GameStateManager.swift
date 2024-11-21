@@ -11,6 +11,44 @@ import FirebaseFirestore
 import FirebaseAuth
 
 extension GameBoardViewController{
+    
+    // Calculate points for the game session
+    func calculatePoints(didWin: Bool, attempts: Int, finalTime: String) -> Int {
+        var totalPoints = 0
+        // Base points if won
+        if didWin {
+            totalPoints += 100
+            // Add the points per attempt
+            switch attempts {
+            case 1: totalPoints += 50
+            case 2: totalPoints += 40
+            case 3: totalPoints += 30
+            case 4: totalPoints += 20
+            case 5: totalPoints += 10
+            default: totalPoints += 0
+            }
+            // Time bonus calculation
+            if let seconds = timeStringToSeconds(finalTime) {
+                totalPoints += Int(max(0, 100 - seconds / 2))
+            }
+        }
+        else {
+            totalPoints = 10
+        }
+        
+        return totalPoints
+    }
+    
+    // Helper function to convert time to seconds
+    func timeStringToSeconds(_ timeString: String) -> Double? {
+        let components = timeString.components(separatedBy: [":", "."])
+        guard components.count == 3,
+              let minutes = Double(components[0]),
+              let seconds = Double(components[1]),
+              let milliseconds = Double(components[2]) else { return nil }
+        return minutes * 60 + seconds + milliseconds / 1000
+    }
+    
     func saveGameState() {
         guard let userID = Auth.auth().currentUser?.uid else {
             print("Error: No user is logged in.")
@@ -281,7 +319,12 @@ extension GameBoardViewController{
         guard let userID = Auth.auth().currentUser?.uid else { return }
         
         let userRef = Firestore.firestore().collection("users").document(userID)
-        
+        let leaderboardRef = Firestore.firestore().collection("leaderboard").document("topPlayers")
+        // Get the points
+        let finalPoints = calculatePoints(didWin: didWin, attempts: attempts, finalTime: finalTime)
+        // Update the points on the board screen
+        boardScreen.updatePoints(finalPoints)
+            
         // Update Firestore with the game result
         let gameID = UUID().uuidString // Generate a unique ID for this game
         let gameData: [String: Any] = [
@@ -289,6 +332,7 @@ extension GameBoardViewController{
             "won": didWin,
             "finalTime": finalTime,
             "attempts": attempts,
+            "points": finalPoints,
             "date": FieldValue.serverTimestamp()
         ]
         
@@ -297,18 +341,58 @@ extension GameBoardViewController{
                 print("Error saving game data: \(error.localizedDescription)")
             } else {
                 print("Game data saved successfully")
+                // Update the user's total points in user collection
+                userRef.getDocument { document, error in
+                    if let document = document, document.exists {
+                        let currentPoints = document.data()?["totalPoints"] as? Int ?? 0
+                        userRef.updateData([
+                            "totalPoints": currentPoints + finalPoints,
+                            "dailyGameCompleted": FieldValue.serverTimestamp()
+                        ]) { error in
+                            if let error = error {
+                                print("Error updating total points or game completed: \(error.localizedDescription)")
+                            }
+                            else {
+                                print("Total points and game completed updated successfully")
+                            }
+                        }
+                    }
+                }
             }
         }
         
-        // Update Firestore with the game completion timestamp
-        userRef.updateData(["dailyGameCompleted": FieldValue.serverTimestamp()]) { error in
-            if let error = error {
-                print("Error updating dailyGameCompleted: \(error.localizedDescription)")
-            } else {
-                print("Daily game completion time recorded")
+        // Now update the total points for the user in the leaderboard
+        leaderboardRef.getDocument { document, error in
+            if let document = document, document.exists,
+               let leaderboardData = document.data() {
+                // Find the users position
+                for (position, value) in leaderboardData {
+                    if let playerData = value as? [String: Any],
+                       let playerID = playerData["userID"] as? String,
+                       playerID == userID {
+                        // Get the total score and update it
+                        let currentScore = playerData["totalScore"] as? Int ?? 0
+                        // Update current position in leaderboard
+                        leaderboardRef.updateData([
+                            position: [
+                                "name": playerData["name"],
+                                "totalScore": currentScore + finalPoints,
+                                "userID": userID
+                            ]
+                        ]) { error in
+                            if let error = error {
+                                print("Error updating leaderboard: \(error.localizedDescription)")
+                            }
+                            else {
+                                print("Successfully updated leaderboard")
+                            }
+                        }
+                        break
+                    }
+                }
             }
         }
-        
+      
         // Reset startTime to 0
         userRef.updateData(["startTime": 0]) { error in
             if let error = error {

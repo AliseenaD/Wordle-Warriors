@@ -77,9 +77,10 @@ class GameBoardViewController: UIViewController {
         defaults.removeObject(forKey: "tilesData")
         defaults.removeObject(forKey: "keyboardData")
         
-        // Reset timer values
+        // Reset timer and points values
         startTime = nil
         boardScreen.timerLabel.text = "00:00.000"
+        boardScreen.pointsLabel.text = ""
         
         // Reset game position
         currentRow = 0

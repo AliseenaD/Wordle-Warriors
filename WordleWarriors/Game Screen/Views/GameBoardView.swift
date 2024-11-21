@@ -4,6 +4,7 @@ class GameBoardView: UIView {
     
     // Label for the timer
     let timerLabel = UILabel()
+    let pointsLabel = UILabel()
     
     private let gradientLayer = CAGradientLayer()
     let wordLength = 5
@@ -16,8 +17,8 @@ class GameBoardView: UIView {
         self.backgroundColor = .darkGray
         setupGradient()
         setupBackButton()
+        setupLabels()
         setupBoard()
-        setupTimerLabel()
     }
     
     required init?(coder: NSCoder) {
@@ -34,8 +35,17 @@ class GameBoardView: UIView {
         layer.insertSublayer(gradientLayer, at: 0)
     }
     
-    // Set up the timer label
-    private func setupTimerLabel() {
+    // Combined setup function for both time and points labels
+    private func setupLabels() {
+        // Set up points label
+        pointsLabel.textColor = .white
+        pointsLabel.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        pointsLabel.textAlignment = .center
+        pointsLabel.text = "" // Initially empty
+        pointsLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(pointsLabel)
+        
+        // Set up timer label
         timerLabel.textColor = .white
         timerLabel.font = UIFont.monospacedDigitSystemFont(ofSize: 26, weight: .bold)
         timerLabel.textAlignment = .center
@@ -43,11 +53,31 @@ class GameBoardView: UIView {
         timerLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(timerLabel)
         
+        // Set up constraints
         NSLayoutConstraint.activate([
-            timerLabel.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 16),
+            // Points label constraints
+            pointsLabel.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 16),
+            pointsLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            pointsLabel.heightAnchor.constraint(equalToConstant: 32),
+            
+            // Timer label constraints
+            timerLabel.topAnchor.constraint(equalTo: pointsLabel.bottomAnchor, constant: 8),
             timerLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             timerLabel.heightAnchor.constraint(equalToConstant: 32)
         ])
+    }
+    
+    // Add method to update points display with animation
+    func updatePoints(_ points: Int) {
+        // Create shine effect
+        pointsLabel.alpha = 0
+        pointsLabel.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        pointsLabel.text = "Points: \(points)"
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.5) {
+            self.pointsLabel.alpha = 1
+            self.pointsLabel.transform = .identity
+        }
     }
     
     private func setupBackButton() {
