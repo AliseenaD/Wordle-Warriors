@@ -13,18 +13,20 @@ class SettingsView: UIView {
     
     let editProfileButton = UIButton(type: .system)
     let darkModeButton = UIButton(type: .system)
+    let darkModeSwitch = UISwitch()
     let aboutUsButton = UIButton(type: .system)
     let shareAppButton = UIButton(type: .system)
     let backButton = UIButton(type: .system)
 
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupGradient()
         setupTitleLabel()
         setupButtons()
+        setupDarkModeSwitch()
         setupBackButton()
         initConstraints()
+        observeThemeChanges()
     }
     
     private func setupBackButton() {
@@ -81,7 +83,39 @@ class SettingsView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         addSubview(button)
     }
+    
+    private func setupDarkModeSwitch() {
+        darkModeSwitch.isOn = false
+        darkModeSwitch.onTintColor = UIColor(red: 65/255, green: 176/255, blue: 171/255, alpha: 1.0)
+        darkModeSwitch.translatesAutoresizingMaskIntoConstraints = false
+        darkModeSwitch.addTarget(self, action: #selector(darkModeToggled), for: .valueChanged)
+        addSubview(darkModeSwitch)
+    }
+    
+    @objc private func darkModeToggled() {
+        let isDarkMode = darkModeSwitch.isOn
+        ThemeManager.shared.isDarkMode = isDarkMode
+        updateGradient(toDarkMode: isDarkMode)
+    }
+    
+    private func observeThemeChanges() {
+        NotificationCenter.default.addObserver(self, selector: #selector(onThemeChanged), name: .themeChanged, object: nil)
+    }
 
+    @objc private func onThemeChanged() {
+        updateGradient(toDarkMode: ThemeManager.shared.isDarkMode)
+    }
+    
+    func updateGradient(toDarkMode isDarkMode: Bool) {
+        gradientLayer.colors = isDarkMode ? [
+            UIColor(red: 0/255, green: 64/255, blue: 58/255, alpha: 1.0).cgColor,  // Dark top
+            UIColor(red: 120/255, green: 185/255, blue: 146/255, alpha: 1.0).cgColor // Dark bottom
+        ] : [
+            UIColor(red: 65/255, green: 176/255, blue: 171/255, alpha: 1.0).cgColor, // Original green top
+            UIColor(red: 149/255, green: 229/255, blue: 182/255, alpha: 1.0).cgColor // Original green bottom
+        ]
+        gradientLayer.frame = bounds
+    }
     
     func initConstraints() {
         NSLayoutConstraint.activate([
@@ -99,8 +133,11 @@ class SettingsView: UIView {
             
             darkModeButton.topAnchor.constraint(equalTo: editProfileButton.bottomAnchor, constant: 20),
             darkModeButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            darkModeButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            darkModeButton.trailingAnchor.constraint(lessThanOrEqualTo: darkModeSwitch.leadingAnchor, constant: -10),
             darkModeButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            darkModeSwitch.centerYAnchor.constraint(equalTo: darkModeButton.centerYAnchor),
+            darkModeSwitch.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             
             aboutUsButton.topAnchor.constraint(equalTo: darkModeButton.bottomAnchor, constant: 20),
             aboutUsButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),

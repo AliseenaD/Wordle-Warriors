@@ -29,6 +29,7 @@
 		F2631D382CED1C290017EFBF /* LeaderboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2631D372CED1C290017EFBF /* LeaderboardController.swift */; };
 		F2631D3A2CED1C390017EFBF /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2631D392CED1C390017EFBF /* LeaderboardView.swift */; };
 		F2631D3C2CED1F310017EFBF /* LeaderboardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2631D3B2CED1F310017EFBF /* LeaderboardCell.swift */; };
+		F2631D492CEFC0CF0017EFBF /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2631D482CEFC0CF0017EFBF /* ThemeManager.swift */; };
 		F2E54D3F2CD812DE00C8DA5E /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E54D3E2CD812DE00C8DA5E /* HomeController.swift */; };
 		F2E54D412CD812E900C8DA5E /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E54D402CD812E900C8DA5E /* HomeView.swift */; };
 		F2E54D442CD81A0200C8DA5E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E54D432CD81A0200C8DA5E /* SettingsView.swift */; };
@@ -64,6 +65,7 @@
 		F2631D372CED1C290017EFBF /* LeaderboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardController.swift; sourceTree = "<group>"; };
 		F2631D392CED1C390017EFBF /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		F2631D3B2CED1F310017EFBF /* LeaderboardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardCell.swift; sourceTree = "<group>"; };
+		F2631D482CEFC0CF0017EFBF /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		F2E54D3E2CD812DE00C8DA5E /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		F2E54D402CD812E900C8DA5E /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		F2E54D432CD81A0200C8DA5E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -158,6 +160,14 @@
 			path = Leaderboard;
 			sourceTree = "<group>";
 		};
+		F2631D472CEFC0C60017EFBF /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				F2631D482CEFC0CF0017EFBF /* ThemeManager.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
 		F2E54D3D2CD812B100C8DA5E /* Home Screen */ = {
 			isa = PBXGroup;
 			children = (
@@ -195,6 +205,7 @@
 		F2F94F432CC8159E00642EDC /* WordleWarriors */ = {
 			isa = PBXGroup;
 			children = (
+				F2631D472CEFC0C60017EFBF /* Theme */,
 				F2631D362CED1C150017EFBF /* Leaderboard */,
 				F2631D2C2CEAA5780017EFBF /* About Us Screen */,
 				F2631D272CE932050017EFBF /* Profile Screen */,
@@ -355,6 +366,7 @@
 				2EB0E8042CD0166200A91900 /* KeyboardView.swift in Sources */,
 				F2631D2B2CE932340017EFBF /* ProfileView.swift in Sources */,
 				F2631D3C2CED1F310017EFBF /* LeaderboardCell.swift in Sources */,
+				F2631D492CEFC0CF0017EFBF /* ThemeManager.swift in Sources */,
 				F2E54D3F2CD812DE00C8DA5E /* HomeController.swift in Sources */,
 				F2F94F6A2CC8324C00642EDC /* SignupController.swift in Sources */,
 				F2631D3A2CED1C390017EFBF /* LeaderboardView.swift in Sources */,

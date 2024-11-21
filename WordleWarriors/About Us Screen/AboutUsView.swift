@@ -18,20 +18,38 @@ class AboutUsView: UIView {
         setupGradient()
         setupBackButton()
         setupTitleLabel()
+        observeThemeChanges()
         
         initConstraints()
     }
 
     private func setupGradient() {
-        gradientLayer.colors = [
-            UIColor(red: 65/255, green: 176/255, blue: 171/255, alpha: 1.0).cgColor,
-            UIColor(red: 149/255, green: 229/255, blue: 182/255, alpha: 1.0).cgColor
+        gradientLayer.colors = ThemeManager.shared.isDarkMode ? [
+            UIColor(red: 0/255, green: 64/255, blue: 58/255, alpha: 1.0).cgColor, // Dark top
+            UIColor(red: 120/255, green: 185/255, blue: 146/255, alpha: 1.0).cgColor // Dark bottom
+        ] : [
+            UIColor(red: 65/255, green: 176/255, blue: 171/255, alpha: 1.0).cgColor, // Light top
+            UIColor(red: 149/255, green: 229/255, blue: 182/255, alpha: 1.0).cgColor // Light bottom
         ]
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
         layer.insertSublayer(gradientLayer, at: 0)
     }
-
+    
+    private func observeThemeChanges() {
+        NotificationCenter.default.addObserver(self, selector: #selector(onThemeChanged), name: .themeChanged, object: nil)
+    }
+    
+    @objc private func onThemeChanged() {
+        gradientLayer.colors = ThemeManager.shared.isDarkMode ? [
+            UIColor(red: 0/255, green: 64/255, blue: 58/255, alpha: 1.0).cgColor, // Dark top
+            UIColor(red: 120/255, green: 185/255, blue: 146/255, alpha: 1.0).cgColor // Dark bottom
+        ] : [
+            UIColor(red: 65/255, green: 176/255, blue: 171/255, alpha: 1.0).cgColor, // Light top
+            UIColor(red: 149/255, green: 229/255, blue: 182/255, alpha: 1.0).cgColor // Light bottom
+        ]
+        gradientLayer.frame = bounds
+    }
     private func setupBackButton() {
         backButton.setTitle("Back", for: .normal)
         backButton.setTitleColor(.white, for: .normal)
