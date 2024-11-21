@@ -151,7 +151,7 @@ extension GameBoardViewController{
             let lastUpdated = (data?["lastUpdated"] as? Timestamp)?.dateValue() ?? Date.distantPast
             let dailyGameCompleted = (data?["dailyGameCompleted"] as? Timestamp)?.dateValue()
             
-            // Return if there's no game state to load (most likely reached if new user)
+            // Return if there's no game state to load
             guard let gameState = data?["gameState"] as? [String: Any] else {
                 print("No saved game state found.")
                 // Load timer state
@@ -162,7 +162,7 @@ extension GameBoardViewController{
             }
             
             // If 'dailyGameCompleted' (time last daily game was completed) is not on the same day as 'lastUpdated' (time today's word is created), then user is playing new game
-            if let dailyGameCompleted = dailyGameCompleted, !self.areDatesOnSameDay(dailyGameCompleted, lastUpdated) {
+            if let dailyGameCompleted = dailyGameCompleted, !self.areDatesOnSameDay(dailyGameCompleted, lastUpdated), !self.isGameActive {
                 print("New day detected. Clearing game state.")
                 self.clearGameState()
                 // Load timer state
@@ -187,7 +187,6 @@ extension GameBoardViewController{
                 // Display timer with appropriate time
                 if let savedStartTime = gameState["startTime"] as? TimeInterval {
                     self.startTime = Date(timeIntervalSince1970: savedStartTime)
-                    let elapsedTime = Date().timeIntervalSince(self.startTime!)
                 } else {
                     // If no start time exists, initialize it as now
                     self.startTime = Date()
@@ -399,37 +398,6 @@ extension GameBoardViewController{
                 print("Error resetting startTime: \(error.localizedDescription)")
             } else {
                 print("startTime reset to 0")
-            }
-        }
-    }
-    
-    func canStartNewGame(completion: @escaping (Bool) -> Void) {
-        guard let userID = Auth.auth().currentUser?.uid else {
-            completion(false)
-            return
-        }
-        
-        let userRef = Firestore.firestore().collection("users").document(userID)
-        userRef.getDocument { snapshot, error in
-            if let error = error {
-                print("Error checking game eligibility: \(error.localizedDescription)")
-                completion(false)
-                return
-            }
-            
-            if let data = snapshot?.data() {
-                let lastUpdated = (data["lastUpdated"] as? Timestamp)?.dateValue() ?? Date.distantPast
-                let dailyGameCompleted = (data["dailyGameCompleted"] as? Timestamp)?.dateValue() ?? Date.distantPast
-                
-                let canStart = lastUpdated > dailyGameCompleted
-                completion(canStart)
-                
-                if canStart {
-                    self.isGameActive = true // Reactivate the keyboard
-                }
-            } else {
-                completion(true)
-                self.isGameActive = true // Reactivate the keyboard by default if no data
             }
         }
     }
