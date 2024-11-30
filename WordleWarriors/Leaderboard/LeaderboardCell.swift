@@ -11,6 +11,7 @@ class LeaderboardCell: UITableViewCell {
 
     private let rankLabel = UILabel()
     private let nameLabel = UILabel()
+    private let countryLabel = UILabel()
     private let scoreLabel = UILabel()
     private let containerView = UIView()
 
@@ -20,6 +21,7 @@ class LeaderboardCell: UITableViewCell {
         setupContainerView()
         setupRankLabel()
         setupNameLabel()
+        setupCountryLabel()
         setupScoreLabel()
         setupConstraints()
     }
@@ -55,6 +57,13 @@ class LeaderboardCell: UITableViewCell {
         containerView.addSubview(nameLabel)
     }
 
+    private func setupCountryLabel() {
+        countryLabel.font = UIFont(name: "AvenirNext-Bold", size: 16)
+        countryLabel.textAlignment = .center
+        countryLabel.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(countryLabel)
+    }
+
     private func setupScoreLabel() {
         scoreLabel.font = UIFont(name: "AvenirNext-Bold", size: 16)
         scoreLabel.textAlignment = .center
@@ -74,8 +83,12 @@ class LeaderboardCell: UITableViewCell {
             rankLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
 
             nameLabel.leadingAnchor.constraint(equalTo: rankLabel.trailingAnchor, constant: 10),
-            nameLabel.trailingAnchor.constraint(equalTo: scoreLabel.leadingAnchor, constant: -10),
+            nameLabel.widthAnchor.constraint(equalToConstant: 100),
             nameLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+
+            countryLabel.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 10),
+            countryLabel.widthAnchor.constraint(equalToConstant: 80),
+            countryLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
 
             scoreLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -10),
             scoreLabel.widthAnchor.constraint(equalToConstant: 80),
@@ -83,9 +96,10 @@ class LeaderboardCell: UITableViewCell {
         ])
     }
 
-    func configure(rank: Int, name: String, score: Int) {
+    func configure(rank: Int, name: String, score: Int, countryCode: String) {
         rankLabel.text = "\(rank)"
         nameLabel.text = name
+        countryLabel.text = countryCode
         scoreLabel.text = "\(score)"
     }
 }

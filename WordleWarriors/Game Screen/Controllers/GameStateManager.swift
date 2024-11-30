@@ -366,6 +366,7 @@ extension GameBoardViewController{
                 for (position, value) in leaderboardData {
                     if let playerData = value as? [String: Any],
                        let playerID = playerData["userID"] as? String,
+                       let countryCode = playerData["country"] as? String,
                        playerID == userID {
                         // Get the total score and update it
                         let currentScore = playerData["totalScore"] as? Int ?? 0
@@ -374,7 +375,8 @@ extension GameBoardViewController{
                             position: [
                                 "name": playerData["name"],
                                 "totalScore": currentScore + finalPoints,
-                                "userID": userID
+                                "userID": userID,
+                                "country": countryCode,
                             ]
                         ]) { error in
                             if let error = error {

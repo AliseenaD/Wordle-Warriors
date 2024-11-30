@@ -8,10 +8,13 @@
 import UIKit
 import FirebaseAuth
 import FirebaseFirestore
+import CoreLocation
 
-class SignupController: UIViewController {
+class SignupController: UIViewController, CLLocationManagerDelegate {
     
     let signupview = SignupView()
+    let locationManager = CLLocationManager()
+    var countryCode: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +22,39 @@ class SignupController: UIViewController {
         
         signupview.playButton.addTarget(self, action: #selector(onButtonPlayTapped), for: .touchUpInside)
         signupview.cancelButton.addTarget(self, action: #selector(onButtonCancelTapped), for: .touchUpInside)
+        
+        requestLocationAccess()
+    }
+    
+    func requestLocationAccess() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        fetchCountryCode(from: location)
+        locationManager.stopUpdatingLocation()
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Failed to get location: \(error.localizedDescription)")
+        showAlert(message: "Unable to determine your location. Please try again.")
+    }
+    
+    func fetchCountryCode(from location: CLLocation) {
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location) { placemarks, error in
+            if let error = error {
+                print("Failed to reverse geocode location: \(error.localizedDescription)")
+                self.showAlert(message: "Unable to determine your country. Please try again.")
+            } else if let countryCode = placemarks?.first?.isoCountryCode {
+                self.countryCode = countryCode
+                print("Country Code: \(countryCode)")
+            }
+        }
     }
     
     @objc func onButtonPlayTapped() {
@@ -32,25 +68,34 @@ class SignupController: UIViewController {
     func registerNewAccount() {
         if let name = signupview.nameTextField.text,
            let email = signupview.emailTextField.text,
-           let password = signupview.passwordTextField.text {
-            // Validations
-            Auth.auth().createUser(withEmail: email, password: password, completion: { result, error in
+           let password = signupview.passwordTextField.text,
+           let countryCode = self.countryCode {
+            // Validate inputs
+            if name.isEmpty || email.isEmpty || password.isEmpty {
+                showAlert(message: "Please fill in all fields.")
+                return
+            }
+
+            Auth.auth().createUser(withEmail: email, password: password) { result, error in
                 if let error = error as NSError? {
                     let errorMessage = error.localizedDescription
                     self.showAlert(message: errorMessage)
                 } else if let user = result?.user {
                     // Add user to Firestore
-                    self.initializeUserInFirestore(userID: user.uid, name: name, email: email)
+                    self.initializeUserInFirestore(userID: user.uid, name: name, email: email, countryCode: countryCode)
                 }
-            })
+            }
+        } else {
+            showAlert(message: "Unable to determine your location. Please ensure location services are enabled.")
         }
     }
     
-    func initializeUserInFirestore(userID: String, name: String, email: String) {
+    func initializeUserInFirestore(userID: String, name: String, email: String, countryCode: String) {
         let db = Firestore.firestore()
         let userData: [String: Any] = [
             "name": name,
             "email": email,
+            "country": countryCode,
             "totalScore": 0, // Initialize total score to 0
             "dailyWord": "", // Placeholder for daily word assignment
             "lastUpdated": FieldValue.serverTimestamp() // Set initial timestamp for daily word tracking
@@ -62,12 +107,12 @@ class SignupController: UIViewController {
                 self.showAlert(message: "Could not initialize user. Please try again.")
             } else {
                 print("User initialized in Firestore successfully.")
-                self.addUserToLeaderboard(userID: userID, name: name)
+                self.addUserToLeaderboard(userID: userID, name: name, countryCode: countryCode)
             }
         }
     }
     
-    func addUserToLeaderboard(userID: String, name: String) {
+    func addUserToLeaderboard(userID: String, name: String, countryCode: String) {
         let db = Firestore.firestore()
         let leaderboardRef = db.collection("leaderboard").document("topPlayers")
 
@@ -80,7 +125,12 @@ class SignupController: UIViewController {
             // If the leaderboard document does not exist, create it
             if let document = document, !document.exists {
                 leaderboardRef.setData([
-                    "1": ["userID": userID, "totalScore": 0, "name": name]
+                    "1": [
+                        "userID": userID,
+                        "totalScore": 0,
+                        "name": name,
+                        "country": countryCode
+                    ]
                 ]) { error in
                     if let error = error {
                         print("Error initializing leaderboard: \(error.localizedDescription)")
@@ -98,7 +148,8 @@ class SignupController: UIViewController {
                 let newEntry: [String: Any] = [
                     "userID": userID,
                     "totalScore": 0,
-                    "name": name
+                    "name": name,
+                    "country": countryCode
                 ]
                 
                 leaderboardRef.setData([String(nextRank): newEntry], merge: true) { error in

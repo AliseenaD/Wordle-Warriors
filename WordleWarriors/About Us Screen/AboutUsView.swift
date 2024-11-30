@@ -11,15 +11,15 @@ class AboutUsView: UIView {
     let gradientLayer = CAGradientLayer()
     let backButton = UIButton(type: .system)
     private let titleLabel = UILabel()
-
+    private let descriptionLabel = UILabel()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupGradient()
         setupBackButton()
         setupTitleLabel()
+        setupDescriptionLabel()
         observeThemeChanges()
-        
         initConstraints()
     }
 
@@ -50,6 +50,7 @@ class AboutUsView: UIView {
         ]
         gradientLayer.frame = bounds
     }
+    
     private func setupBackButton() {
         backButton.setTitle("Back", for: .normal)
         backButton.setTitleColor(.white, for: .normal)
@@ -71,6 +72,16 @@ class AboutUsView: UIView {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(titleLabel)
     }
+    
+    private func setupDescriptionLabel() {
+        descriptionLabel.text = "Final Project for CS5520 by Mohamoud Barre, Ali Daeihagh, and Nishanth Gopinath."
+        descriptionLabel.font = UIFont(name: "AvenirNext-Bold", size: 20)
+        descriptionLabel.textColor = .white
+        descriptionLabel.textAlignment = .center
+        descriptionLabel.numberOfLines = 0 // Allow multiline text
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(descriptionLabel)
+    }
 
     func initConstraints() {
         NSLayoutConstraint.activate([
@@ -80,6 +91,10 @@ class AboutUsView: UIView {
             
             titleLabel.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 10),
             titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+
+            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10), // Directly under About Us
+            descriptionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            descriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20)
         ])
     }
 

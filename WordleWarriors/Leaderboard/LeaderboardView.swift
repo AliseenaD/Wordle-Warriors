@@ -14,6 +14,7 @@ class LeaderboardView: UIView {
     private let headerContainer = UIView()
     private let rankHeaderLabel = UILabel()
     private let nameHeaderLabel = UILabel()
+    private let countryHeaderLabel = UILabel() // Added country header
     private let scoreHeaderLabel = UILabel()
     let leaderboardTableView = UITableView()
 
@@ -101,6 +102,14 @@ class LeaderboardView: UIView {
         nameHeaderLabel.translatesAutoresizingMaskIntoConstraints = false
         headerContainer.addSubview(nameHeaderLabel)
 
+        // Country Header
+        countryHeaderLabel.text = "Country"
+        countryHeaderLabel.font = UIFont(name: "AvenirNext-Bold", size: 16)
+        countryHeaderLabel.textAlignment = .center
+        countryHeaderLabel.textColor = .white
+        countryHeaderLabel.translatesAutoresizingMaskIntoConstraints = false
+        headerContainer.addSubview(countryHeaderLabel)
+
         // Score Header
         scoreHeaderLabel.text = "Score"
         scoreHeaderLabel.font = UIFont(name: "AvenirNext-Bold", size: 16)
@@ -140,8 +149,13 @@ class LeaderboardView: UIView {
 
             // Name header constraints
             nameHeaderLabel.leadingAnchor.constraint(equalTo: rankHeaderLabel.trailingAnchor, constant: 10),
-            nameHeaderLabel.trailingAnchor.constraint(equalTo: scoreHeaderLabel.leadingAnchor, constant: -10),
+            nameHeaderLabel.widthAnchor.constraint(equalToConstant: 100),
             nameHeaderLabel.centerYAnchor.constraint(equalTo: headerContainer.centerYAnchor),
+
+            // Country header constraints
+            countryHeaderLabel.leadingAnchor.constraint(equalTo: nameHeaderLabel.trailingAnchor, constant: 10),
+            countryHeaderLabel.widthAnchor.constraint(equalToConstant: 80),
+            countryHeaderLabel.centerYAnchor.constraint(equalTo: headerContainer.centerYAnchor),
 
             // Score header constraints
             scoreHeaderLabel.trailingAnchor.constraint(equalTo: headerContainer.trailingAnchor, constant: -10),
