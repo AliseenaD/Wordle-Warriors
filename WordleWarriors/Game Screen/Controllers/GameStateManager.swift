@@ -150,6 +150,7 @@ extension GameBoardViewController{
             let data = document.data()
             let lastUpdated = (data?["lastUpdated"] as? Timestamp)?.dateValue() ?? Date.distantPast
             let dailyGameCompleted = (data?["dailyGameCompleted"] as? Timestamp)?.dateValue()
+            let isGameActive = data?["isGameActive"] as? Bool
             
             // Return if there's no game state to load
             guard let gameState = data?["gameState"] as? [String: Any] else {
@@ -158,14 +159,29 @@ extension GameBoardViewController{
                 self.startTime = Date()
                 self.startTimer()
                 self.isGameActive = true
+                // Update Firestore field to indicate game is active
+                userRef.updateData(["isGameActive": true]) { error in
+                    if let error = error {
+                        print("Error updating game state: \(error.localizedDescription)")
+                    } else {
+                        print("Game state updated: isGameActive set to true.")
+                    }
+                }
                 return
             }
             
-            // If 'dailyGameCompleted' (time last daily game was completed) is not on the same day as 'lastUpdated' (time today's word is created), then user is playing new game
-            if let dailyGameCompleted = dailyGameCompleted, !self.areDatesOnSameDay(dailyGameCompleted, lastUpdated), !self.isGameActive {
-                print("New day detected. Clearing game state and starting timer.")
-                self.clearGameState {
-                    DispatchQueue.main.async {
+            // If 'dailyGameCompleted' (time last daily game was completed) is not on the same day as 'lastUpdated' (time today's word is created) AND game is not active, then user is playing on a new day
+            if let dailyGameCompleted = dailyGameCompleted,
+               !self.areDatesOnSameDay(dailyGameCompleted, lastUpdated),
+                let isGameActive = isGameActive, !isGameActive{
+                print("New day detected. Starting timer.")
+                // Update Firestore field to indicate game is active
+                userRef.updateData(["isGameActive": true]) { error in
+                    if let error = error {
+                        print("Error updating game state: \(error.localizedDescription)")
+                    } else {
+                        print("Game state updated: isGameActive set to true.")
+                        // Proceed with starting the game
                         self.startTime = Date()
                         self.startTimer()
                         self.isGameActive = true
@@ -344,7 +360,8 @@ extension GameBoardViewController{
                         let currentPoints = document.data()?["totalPoints"] as? Int ?? 0
                         userRef.updateData([
                             "totalPoints": currentPoints + finalPoints,
-                            "dailyGameCompleted": FieldValue.serverTimestamp()
+                            "dailyGameCompleted": FieldValue.serverTimestamp(),
+                            "isGameActive": false
                         ]) { error in
                             if let error = error {
                                 print("Error updating total points or game completed: \(error.localizedDescription)")
@@ -400,6 +417,34 @@ extension GameBoardViewController{
                 print("startTime reset to 0")
             }
         }
+        
+        // Display pop-up message
+        let message = didWin ? "Congratulations! You won!" : "Game Over! Better luck next time."
+        displayPopup(message: message) {
+            // Navigate to the appropriate screen after the popup
+            if didWin {
+                // Delay by 2 seconds before sending to Challenge Screen
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                    self.clearGameState()
+                    let challengeController = ChallengeController()
+                    challengeController.modalPresentationStyle = .fullScreen
+                    self.present(challengeController, animated: true, completion: nil)
+                }
+            } else {
+                // Navigate back to Home Screen if they lost
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                    self.clearGameState() 
+                    if let navigationController = self.navigationController {
+                        navigationController.popToRootViewController(animated: true)
+                    } else {
+                        let homeController = HomeController()
+                        homeController.modalPresentationStyle = .fullScreen
+                        self.present(homeController, animated: true, completion: nil)
+                    }
+                }
+            }
+        }
+
     }
     
     func fetchOrGenerateDailyWord(completion: @escaping (String?) -> Void) {
@@ -475,5 +520,52 @@ extension GameBoardViewController{
     func generateRandomWord(completion: @escaping (String?) -> Void) {
         let randomWord = WordManager.shared.generateRandomWord()
         completion(randomWord)
+    }
+    
+    // Helper function to display a pop-up
+    func displayPopup(message: String, completion: @escaping () -> Void) {
+        let popupView = UIView()
+        popupView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+        popupView.layer.cornerRadius = 12
+        popupView.clipsToBounds = true
+        popupView.translatesAutoresizingMaskIntoConstraints = false
+
+        let messageLabel = UILabel()
+        messageLabel.text = message
+        messageLabel.textColor = .white
+        messageLabel.textAlignment = .center
+        messageLabel.numberOfLines = 0
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        popupView.addSubview(messageLabel)
+        view.addSubview(popupView)
+
+        // Set up constraints for the popup
+        NSLayoutConstraint.activate([
+            popupView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            popupView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            popupView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
+            popupView.heightAnchor.constraint(equalToConstant: 120),
+
+            messageLabel.centerXAnchor.constraint(equalTo: popupView.centerXAnchor),
+            messageLabel.centerYAnchor.constraint(equalTo: popupView.centerYAnchor),
+            messageLabel.leadingAnchor.constraint(equalTo: popupView.leadingAnchor, constant: 16),
+            messageLabel.trailingAnchor.constraint(equalTo: popupView.trailingAnchor, constant: -16)
+        ])
+
+        // Animate the popup appearance and disappearance
+        popupView.alpha = 0
+        UIView.animate(withDuration: 0.3, animations: {
+            popupView.alpha = 1
+        }) { _ in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                UIView.animate(withDuration: 0.3, animations: {
+                    popupView.alpha = 0
+                }) { _ in
+                    popupView.removeFromSuperview()
+                    completion()
+                }
+            }
+        }
     }
 }

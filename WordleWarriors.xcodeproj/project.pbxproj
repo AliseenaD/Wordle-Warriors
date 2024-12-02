@@ -11,11 +11,13 @@
 		2EB0E8062CD0168400A91900 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB0E8052CD0168400A91900 /* KeyboardViewController.swift */; };
 		2EB0E8082CD0169E00A91900 /* GameBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB0E8072CD0169E00A91900 /* GameBoardViewController.swift */; };
 		2EB0E80A2CD016B700A91900 /* GameBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB0E8092CD016B700A91900 /* GameBoardView.swift */; };
+		9D37AA2D2CF52497003EE52B /* ChallengeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D37AA2C2CF52497003EE52B /* ChallengeController.swift */; };
 		9D4229BE2CCB36FF0046602D /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9D4229BD2CCB36FF0046602D /* FirebaseCore */; };
 		9D4F9CDB2CEC0153006C111B /* GameStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D4F9CDA2CEC0153006C111B /* GameStateManager.swift */; };
 		9D4F9CDD2CEC0D56006C111B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D4F9CDC2CEC0D55006C111B /* GoogleService-Info.plist */; };
 		9D58D7262CC9BEDA00C31811 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 9D58D7252CC9BEDA00C31811 /* FirebaseDatabase */; };
 		9D9421372CEE7C3A0041BC42 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9421362CEE7C3A0041BC42 /* TimerManager.swift */; };
+		9DA752A02CF2A9C000ADF3C1 /* ChallengeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA7529F2CF2A9C000ADF3C1 /* ChallengeView.swift */; };
 		9DA77E852CCB2D3C00ABECC5 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9DA77E842CCB2D3C00ABECC5 /* FirebaseAuth */; };
 		9DA77E872CCB2D3C00ABECC5 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9DA77E862CCB2D3C00ABECC5 /* FirebaseFirestore */; };
 		9DA77E892CCB2D3C00ABECC5 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 9DA77E882CCB2D3C00ABECC5 /* FirebaseStorage */; };
@@ -53,9 +55,11 @@
 		2EB0E8052CD0168400A91900 /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
 		2EB0E8072CD0169E00A91900 /* GameBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardViewController.swift; sourceTree = "<group>"; };
 		2EB0E8092CD016B700A91900 /* GameBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardView.swift; sourceTree = "<group>"; };
+		9D37AA2C2CF52497003EE52B /* ChallengeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeController.swift; sourceTree = "<group>"; };
 		9D4F9CDA2CEC0153006C111B /* GameStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStateManager.swift; sourceTree = "<group>"; };
 		9D4F9CDC2CEC0D55006C111B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9D9421362CEE7C3A0041BC42 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
+		9DA7529F2CF2A9C000ADF3C1 /* ChallengeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeView.swift; sourceTree = "<group>"; };
 		9DABEBEF2CED2CF700915093 /* words.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = words.txt; sourceTree = "<group>"; };
 		9DABEBF12CED2F7A00915093 /* WordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordManager.swift; sourceTree = "<group>"; };
 		F2631D282CE932230017EFBF /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -110,6 +114,15 @@
 				9DDEF62B2CD56F1500B1A8A3 /* Views */,
 			);
 			path = "Game Screen";
+			sourceTree = "<group>";
+		};
+		9DA7529E2CF2A88700ADF3C1 /* Challenge Screen */ = {
+			isa = PBXGroup;
+			children = (
+				9DA7529F2CF2A9C000ADF3C1 /* ChallengeView.swift */,
+				9D37AA2C2CF52497003EE52B /* ChallengeController.swift */,
+			);
+			path = "Challenge Screen";
 			sourceTree = "<group>";
 		};
 		9DDEF62B2CD56F1500B1A8A3 /* Views */ = {
@@ -205,6 +218,7 @@
 		F2F94F432CC8159E00642EDC /* WordleWarriors */ = {
 			isa = PBXGroup;
 			children = (
+				9DA7529E2CF2A88700ADF3C1 /* Challenge Screen */,
 				F2631D472CEFC0C60017EFBF /* Theme */,
 				F2631D362CED1C150017EFBF /* Leaderboard */,
 				F2631D2C2CEAA5780017EFBF /* About Us Screen */,
@@ -363,6 +377,7 @@
 				F2F94F492CC8159E00642EDC /* ViewController.swift in Sources */,
 				F2631D292CE932230017EFBF /* ProfileViewController.swift in Sources */,
 				F2F94F662CC8321200642EDC /* LoginController.swift in Sources */,
+				9D37AA2D2CF52497003EE52B /* ChallengeController.swift in Sources */,
 				2EB0E8042CD0166200A91900 /* KeyboardView.swift in Sources */,
 				F2631D2B2CE932340017EFBF /* ProfileView.swift in Sources */,
 				F2631D3C2CED1F310017EFBF /* LeaderboardCell.swift in Sources */,
@@ -374,6 +389,7 @@
 				F2F94F5A2CC816C600642EDC /* MainView.swift in Sources */,
 				F2F94F452CC8159E00642EDC /* AppDelegate.swift in Sources */,
 				F2F94F642CC831FC00642EDC /* LoginView.swift in Sources */,
+				9DA752A02CF2A9C000ADF3C1 /* ChallengeView.swift in Sources */,
 				F2631D302CEAA5B20017EFBF /* AboutUsController.swift in Sources */,
 				F2F94F472CC8159E00642EDC /* SceneDelegate.swift in Sources */,
 				2EB0E80A2CD016B700A91900 /* GameBoardView.swift in Sources */,
