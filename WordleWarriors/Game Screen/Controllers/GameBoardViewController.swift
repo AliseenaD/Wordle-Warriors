@@ -10,6 +10,8 @@ import UIKit
 
 class GameBoardViewController: UIViewController {
     
+    let gameBoardView = GameBoardView()
+    
     // Properties for the controller
     let wordLength = 5
     let maxGuesses = 6

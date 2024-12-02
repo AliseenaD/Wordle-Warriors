@@ -433,14 +433,10 @@ extension GameBoardViewController{
             } else {
                 // Navigate back to Home Screen if they lost
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                    self.clearGameState() 
-                    if let navigationController = self.navigationController {
-                        navigationController.popToRootViewController(animated: true)
-                    } else {
-                        let homeController = HomeController()
-                        homeController.modalPresentationStyle = .fullScreen
-                        self.present(homeController, animated: true, completion: nil)
-                    }
+                    self.clearGameState()
+                    let homeController = HomeController()
+                    homeController.modalPresentationStyle = .fullScreen
+                    self.present(homeController, animated: true, completion: nil)
                 }
             }
         }
@@ -542,11 +538,14 @@ extension GameBoardViewController{
 
         // Set up constraints for the popup
         NSLayoutConstraint.activate([
+            // Popup view constraints
             popupView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            popupView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            popupView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
-            popupView.heightAnchor.constraint(equalToConstant: 120),
+            popupView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 125),
+            popupView.leadingAnchor.constraint(equalTo: messageLabel.leadingAnchor, constant: -16),
+            popupView.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor, constant: 16),
+            popupView.heightAnchor.constraint(equalTo: messageLabel.heightAnchor, constant: 12),
 
+            // Message label constraints
             messageLabel.centerXAnchor.constraint(equalTo: popupView.centerXAnchor),
             messageLabel.centerYAnchor.constraint(equalTo: popupView.centerYAnchor),
             messageLabel.leadingAnchor.constraint(equalTo: popupView.leadingAnchor, constant: 16),

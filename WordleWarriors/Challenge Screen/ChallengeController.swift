@@ -38,16 +38,16 @@ class ChallengeController: UIViewController {
     }
 
     // Action for the Send Challenge button
-    @objc private func sendChallengeTapped() {
+    @objc func sendChallengeTapped() {
         // Logic to send a challenge
         print("Send Challenge tapped")
         // You can add navigation or other logic here
     }
 
     // Action for the Cancel button
-    @objc private func cancelTapped() {
-        // Logic to dismiss the ChallengeController
-        print("Cancel tapped")
-        dismiss(animated: true, completion: nil)
+    @objc func cancelTapped() {
+        let homeController = HomeController()
+        homeController.modalPresentationStyle = .fullScreen
+        self.present(homeController, animated: true, completion: nil)
     }
 }

@@ -54,7 +54,7 @@ class ChallengeView: UIView {
     //setup title
     private func setupTitleLabel() {
         titleLabel.text = "Challenge a Friend?"
-        titleLabel.font = UIFont(name: "AvenirNext-Bold", size: 34)
+        titleLabel.font = UIFont(name: "AvenirNext-Bold", size: 28)
         titleLabel.textColor = .white
         titleLabel.textAlignment = .center
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -113,7 +113,7 @@ class ChallengeView: UIView {
         NSLayoutConstraint.activate([
             containerView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             containerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 175),
-            containerView.widthAnchor.constraint(equalToConstant: 300),
+            containerView.widthAnchor.constraint(equalToConstant: 350),
             containerView.heightAnchor.constraint(equalToConstant: 450),
             
             titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 30),
