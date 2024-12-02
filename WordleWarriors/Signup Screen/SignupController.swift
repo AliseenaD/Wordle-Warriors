@@ -53,7 +53,8 @@ class SignupController: UIViewController {
             "email": email,
             "totalScore": 0, // Initialize total score to 0
             "dailyWord": "", // Placeholder for daily word assignment
-            "lastUpdated": FieldValue.serverTimestamp() // Set initial timestamp for daily word tracking
+            "lastUpdated": FieldValue.serverTimestamp(), // Set initial timestamp for daily word tracking
+            "isGameActive": false // To track if user is actively playing a game
         ]
         
         db.collection("users").document(userID).setData(userData) { error in
