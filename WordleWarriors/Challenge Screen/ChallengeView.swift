@@ -12,10 +12,9 @@ class ChallengeView: UIView {
     let gradientLayer = CAGradientLayer()
     let containerView = UIView()
     let titleLabel = UILabel()
-    let chooseOpponentLabel = UILabel()
-    var searchBar: UISearchBar!
     let scoreLabel = UILabel()
-    let sendButton = UIButton(type: .system)
+    let totalScoreLabel = UILabel()
+    let averageScoreLabel = UILabel()
     let cancelButton = UIButton(type: .system)
 
     override init(frame: CGRect) {
@@ -23,11 +22,11 @@ class ChallengeView: UIView {
         setupGradient()
         setupContainerView()
         setupTitleLabel()
-        setupChooseOpponentLabel()
         setupScoreLabel()
-        setupSearchBar()
-        setupSendButton()
+        setupTotalScoreLabel()
+        setupAverageScoreLabel()
         setupCancelButton()
+        initConstraints()
 
         initConstraints()
     }
@@ -53,7 +52,7 @@ class ChallengeView: UIView {
     
     //setup title
     private func setupTitleLabel() {
-        titleLabel.text = "Challenge a Friend?"
+        titleLabel.text = "Game Stats"
         titleLabel.font = UIFont(name: "AvenirNext-Bold", size: 28)
         titleLabel.textColor = .white
         titleLabel.textAlignment = .center
@@ -61,47 +60,41 @@ class ChallengeView: UIView {
         addSubview(titleLabel)
     }
     
-    //setup opponent label
-    private func setupChooseOpponentLabel() {
-        chooseOpponentLabel.text = "Choose Oppenent:"
-        chooseOpponentLabel.font = UIFont(name: "AvenirNext-Bold", size: 22)
-        chooseOpponentLabel.textColor = .white
-        chooseOpponentLabel.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(chooseOpponentLabel)
-    }
-    
-    func setupSearchBar() {
-        searchBar = UISearchBar()
-        searchBar.placeholder = "To:"
-        searchBar.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(searchBar)
-    }
-    
     //setup score label
     private func setupScoreLabel() {
-        scoreLabel.text = "Score to beat:"
+        scoreLabel.text = "Current Score:"
         scoreLabel.font = UIFont(name: "AvenirNext-Bold", size: 22)
         scoreLabel.textColor = .white
+        scoreLabel.textAlignment = .center
         scoreLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(scoreLabel)
     }
     
-    //setup play button
-    private func setupSendButton() {
-        sendButton.setTitle("Send Challenge", for: .normal)
-        sendButton.setTitleColor(.white, for: .normal)
-        sendButton.backgroundColor = UIColor(red: 102/255, green: 217/255, blue: 178/255, alpha: 1.0)
-        sendButton.layer.cornerRadius = 20
-        sendButton.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 20)
-        sendButton.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addSubview(sendButton)
+    //setup total score label
+    private func setupTotalScoreLabel() {
+        totalScoreLabel.text = "Total Score:"
+        totalScoreLabel.font = UIFont(name: "AvenirNext-Bold", size: 22)
+        totalScoreLabel.textColor = .white
+        totalScoreLabel.textAlignment = .center
+        totalScoreLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(totalScoreLabel)
     }
     
+    //setup average score label
+    private func setupAverageScoreLabel() {
+        averageScoreLabel.text = "Average Score:"
+        averageScoreLabel.font = UIFont(name: "AvenirNext-Bold", size: 22)
+        averageScoreLabel.textColor = .white
+        averageScoreLabel.textAlignment = .center
+        averageScoreLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(averageScoreLabel)
+    }
+
     //setup cancel button
     private func setupCancelButton() {
-        cancelButton.setTitle("Cancel", for: .normal)
+        cancelButton.setTitle("Return home", for: .normal)
         cancelButton.setTitleColor(.white, for: .normal)
-        cancelButton.backgroundColor = UIColor(red: 255/255, green: 176/255, blue: 59/255, alpha: 1.0)
+        cancelButton.backgroundColor = UIColor(red: 102/255, green: 217/255, blue: 178/255, alpha: 1.0)
         cancelButton.layer.cornerRadius = 20
         cancelButton.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 20)
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
@@ -109,7 +102,7 @@ class ChallengeView: UIView {
     }
 
 
-    func initConstraints(){
+    func initConstraints() {
         NSLayoutConstraint.activate([
             containerView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             containerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 175),
@@ -119,28 +112,20 @@ class ChallengeView: UIView {
             titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 30),
             titleLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             
-            chooseOpponentLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 80),
-            chooseOpponentLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 25),
+            scoreLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 60),
+            scoreLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             
-            searchBar.topAnchor.constraint(equalTo: chooseOpponentLabel.bottomAnchor),
-            searchBar.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            searchBar.widthAnchor.constraint(equalToConstant: 250),
-            searchBar.heightAnchor.constraint(equalToConstant: 40),
+            totalScoreLabel.topAnchor.constraint(equalTo: scoreLabel.bottomAnchor, constant: 40),
+            totalScoreLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             
-            scoreLabel.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 5),
-            scoreLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 25),
+            averageScoreLabel.topAnchor.constraint(equalTo: totalScoreLabel.bottomAnchor, constant: 40),
+            averageScoreLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             
-            sendButton.topAnchor.constraint(equalTo: scoreLabel.bottomAnchor, constant: 25),
-            sendButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            sendButton.widthAnchor.constraint(equalToConstant: 250),
-            sendButton.heightAnchor.constraint(equalToConstant: 50),
-            
-            cancelButton.topAnchor.constraint(equalTo: sendButton.bottomAnchor, constant: 5),
+            cancelButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -30),
             cancelButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             cancelButton.widthAnchor.constraint(equalToConstant: 250),
             cancelButton.heightAnchor.constraint(equalToConstant: 50)
         ])
-
     }
     
     override func layoutSubviews() {

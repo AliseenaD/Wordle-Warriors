@@ -33,21 +33,22 @@ class ChallengeController: UIViewController {
 
     private func setupActions() {
         // Handle button actions
-        challengeView.sendButton.addTarget(self, action: #selector(sendChallengeTapped), for: .touchUpInside)
         challengeView.cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
-    }
-
-    // Action for the Send Challenge button
-    @objc func sendChallengeTapped() {
-        // Logic to send a challenge
-        print("Send Challenge tapped")
-        // You can add navigation or other logic here
     }
 
     // Action for the Cancel button
     @objc func cancelTapped() {
-        let homeController = HomeController()
-        homeController.modalPresentationStyle = .fullScreen
-        self.present(homeController, animated: true, completion: nil)
+        if let navigationController = self.presentingViewController as? UINavigationController {
+            self.dismiss(animated: true) {
+                // Look through the stack for HomeController
+                for (index, controller) in navigationController.viewControllers.enumerated() {
+                    if controller is HomeController {
+                        // Pop to that specific HomeController
+                        navigationController.popToViewController(navigationController.viewControllers[index], animated: true)
+                        return
+                    }
+                }
+            }
+        }
     }
 }
