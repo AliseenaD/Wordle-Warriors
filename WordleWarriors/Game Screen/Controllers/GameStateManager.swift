@@ -328,79 +328,83 @@ extension GameBoardViewController{
     
     func handleGameCompletion(didWin: Bool, attempts: Int, finalTime: String) {
         self.isGameActive = false // Freeze the keyboard
-        
+
         guard let userID = Auth.auth().currentUser?.uid else { return }
-        
+
         let userRef = Firestore.firestore().collection("users").document(userID)
         let leaderboardRef = Firestore.firestore().collection("leaderboard").document("topPlayers")
-        // Get the points
         let finalPoints = calculatePoints(didWin: didWin, attempts: attempts, finalTime: finalTime)
-        // Update the points on the board screen
-        boardScreen.updatePoints(finalPoints)
-            
-        // Update Firestore with the game result
-        let gameID = UUID().uuidString // Generate a unique ID for this game
-        let gameData: [String: Any] = [
+
+        userRef.collection("games").document(UUID().uuidString).setData([
             "word": targetWord,
             "won": didWin,
             "finalTime": finalTime,
             "attempts": attempts,
             "points": finalPoints,
             "date": FieldValue.serverTimestamp()
-        ]
-        
-        userRef.collection("games").document(gameID).setData(gameData) { error in
+        ]) { error in
             if let error = error {
                 print("Error saving game data: \(error.localizedDescription)")
-            } else {
-                print("Game data saved successfully")
-                // Update the user's total points in user collection
-                userRef.getDocument { document, error in
-                    if let document = document, document.exists {
-                        let currentPoints = document.data()?["totalPoints"] as? Int ?? 0
-                        userRef.updateData([
-                            "totalPoints": currentPoints + finalPoints,
-                            "dailyGameCompleted": FieldValue.serverTimestamp(),
-                            "isGameActive": false
-                        ]) { error in
-                            if let error = error {
-                                print("Error updating total points or game completed: \(error.localizedDescription)")
-                            }
-                            else {
-                                print("Total points and game completed updated successfully")
+                return
+            }
+
+            print("Game data saved successfully.")
+
+            userRef.getDocument { document, error in
+                if let document = document, document.exists {
+                    let currentTotalScore = document.data()?["totalScore"] as? Int ?? 0
+                    let gamesPlayed = document.data()?["gamesPlayed"] as? Int ?? 0
+                    let newTotalScore = currentTotalScore + finalPoints
+                    let newGamesPlayed = gamesPlayed + 1
+                    let newAverageScore = Double(newTotalScore) / Double(newGamesPlayed)
+
+                    userRef.updateData([
+                        "totalScore": newTotalScore,
+                        "gamesPlayed": newGamesPlayed,
+                        "averageScore": newAverageScore,
+                        "dailyGameCompleted": FieldValue.serverTimestamp(),
+                        "isGameActive": false
+                    ]) { error in
+                        if let error = error {
+                            print("Error updating user scores: \(error.localizedDescription)")
+                        } else {
+                            print("Scores updated successfully.")
+
+                            // Pass values to ChallengeController and navigate
+                            DispatchQueue.main.async {
+                                let challengeController = ChallengeController()
+                                challengeController.modalPresentationStyle = .fullScreen
+                                challengeController.totalScore = newTotalScore
+                                challengeController.gamesPlayed = newGamesPlayed
+                                challengeController.averageScore = newAverageScore
+                                self.present(challengeController, animated: true, completion: nil)
                             }
                         }
                     }
                 }
             }
         }
-        
-        // Now update the total points for the user in the leaderboard
+
         leaderboardRef.getDocument { document, error in
             if let document = document, document.exists,
                let leaderboardData = document.data() {
-                // Find the users position
                 for (position, value) in leaderboardData {
                     if let playerData = value as? [String: Any],
                        let playerID = playerData["userID"] as? String,
-                       let countryCode = playerData["country"] as? String,
                        playerID == userID {
-                        // Get the total score and update it
                         let currentScore = playerData["totalScore"] as? Int ?? 0
-                        // Update current position in leaderboard
                         leaderboardRef.updateData([
                             position: [
                                 "name": playerData["name"],
                                 "totalScore": currentScore + finalPoints,
                                 "userID": userID,
-                                "country": countryCode,
+                                "country": playerData["country"] ?? ""
                             ]
                         ]) { error in
                             if let error = error {
                                 print("Error updating leaderboard: \(error.localizedDescription)")
-                            }
-                            else {
-                                print("Successfully updated leaderboard")
+                            } else {
+                                print("Leaderboard updated successfully.")
                             }
                         }
                         break
@@ -408,40 +412,12 @@ extension GameBoardViewController{
                 }
             }
         }
-      
-        // Reset startTime to 0
-        userRef.updateData(["startTime": 0]) { error in
-            if let error = error {
-                print("Error resetting startTime: \(error.localizedDescription)")
-            } else {
-                print("startTime reset to 0")
-            }
-        }
-        
-        // Display pop-up message
-        let message = didWin ? "Congratulations! You won!" : "Game Over! Better luck next time."
-        displayPopup(message: message) {
-            // Navigate to the appropriate screen after the popup
-            if didWin {
-                // Delay by 2 seconds before sending to Challenge Screen
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                    self.clearGameState()
-                    let challengeController = ChallengeController()
-                    challengeController.modalPresentationStyle = .fullScreen
-                    self.present(challengeController, animated: true, completion: nil)
-                }
-            } else {
-                // Navigate back to Home Screen if they lost
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                    self.clearGameState()
-                    let homeController = HomeController()
-                    homeController.modalPresentationStyle = .fullScreen
-                    self.present(homeController, animated: true, completion: nil)
-                }
-            }
-        }
 
+        displayPopup(message: didWin ? "Congratulations! You won!" : "Game Over! Better luck next time.") {
+            self.clearGameState()
+        }
     }
+
     
     func fetchOrGenerateDailyWord(completion: @escaping (String?) -> Void) {
         guard let userID = Auth.auth().currentUser?.uid else {

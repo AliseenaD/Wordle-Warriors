@@ -27,11 +27,8 @@ class ChallengeView: UIView {
         setupAverageScoreLabel()
         setupCancelButton()
         initConstraints()
-
-        initConstraints()
     }
 
-    //setup background
     private func setupGradient() {
         gradientLayer.colors = [
             UIColor(red: 65/255, green: 176/255, blue: 171/255, alpha: 1.0).cgColor,
@@ -41,16 +38,14 @@ class ChallengeView: UIView {
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
         layer.insertSublayer(gradientLayer, at: 0)
     }
-    
-    //setup grey box
+
     private func setupContainerView() {
         containerView.backgroundColor = UIColor(white: 0.0, alpha: 0.2)
         containerView.layer.cornerRadius = 20
         containerView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(containerView)
     }
-    
-    //setup title
+
     private func setupTitleLabel() {
         titleLabel.text = "Game Stats"
         titleLabel.font = UIFont(name: "AvenirNext-Bold", size: 28)
@@ -59,8 +54,7 @@ class ChallengeView: UIView {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(titleLabel)
     }
-    
-    //setup score label
+
     private func setupScoreLabel() {
         scoreLabel.text = "Current Score:"
         scoreLabel.font = UIFont(name: "AvenirNext-Bold", size: 22)
@@ -69,8 +63,7 @@ class ChallengeView: UIView {
         scoreLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(scoreLabel)
     }
-    
-    //setup total score label
+
     private func setupTotalScoreLabel() {
         totalScoreLabel.text = "Total Score:"
         totalScoreLabel.font = UIFont(name: "AvenirNext-Bold", size: 22)
@@ -79,8 +72,7 @@ class ChallengeView: UIView {
         totalScoreLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(totalScoreLabel)
     }
-    
-    //setup average score label
+
     private func setupAverageScoreLabel() {
         averageScoreLabel.text = "Average Score:"
         averageScoreLabel.font = UIFont(name: "AvenirNext-Bold", size: 22)
@@ -90,7 +82,6 @@ class ChallengeView: UIView {
         addSubview(averageScoreLabel)
     }
 
-    //setup cancel button
     private func setupCancelButton() {
         cancelButton.setTitle("Return home", for: .normal)
         cancelButton.setTitleColor(.white, for: .normal)
@@ -100,7 +91,6 @@ class ChallengeView: UIView {
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(cancelButton)
     }
-
 
     func initConstraints() {
         NSLayoutConstraint.activate([
@@ -127,7 +117,7 @@ class ChallengeView: UIView {
             cancelButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         gradientLayer.frame = bounds

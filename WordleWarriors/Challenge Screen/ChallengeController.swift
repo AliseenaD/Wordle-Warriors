@@ -8,12 +8,16 @@
 import UIKit
 
 class ChallengeController: UIViewController {
+    var totalScore: Int = 0
+    var gamesPlayed: Int = 0
+    var averageScore: Double = 0.0
+
     private var challengeView: ChallengeView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupChallengeView()
-        setupActions()
+        displayScores()
     }
 
     private func setupChallengeView() {
@@ -21,7 +25,7 @@ class ChallengeController: UIViewController {
         challengeView = ChallengeView()
         challengeView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(challengeView)
-        
+
         // Set up constraints for ChallengeView to fill the entire screen
         NSLayoutConstraint.activate([
             challengeView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -29,21 +33,23 @@ class ChallengeController: UIViewController {
             challengeView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             challengeView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+
+        // Set up button action
+        challengeView.cancelButton.addTarget(self, action: #selector(returnHome), for: .touchUpInside)
     }
 
-    private func setupActions() {
-        // Handle button actions
-        challengeView.cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
+    private func displayScores() {
+        // Update the labels with the received score values
+        challengeView.totalScoreLabel.text = "Total Score: \(totalScore)"
+        challengeView.averageScoreLabel.text = "Average Score: \(String(format: "%.2f", averageScore))"
+        challengeView.scoreLabel.text = "Games Played: \(gamesPlayed)"
     }
 
-    // Action for the Cancel button
-    @objc func cancelTapped() {
+    @objc private func returnHome() {
         if let navigationController = self.presentingViewController as? UINavigationController {
             self.dismiss(animated: true) {
-                // Look through the stack for HomeController
                 for (index, controller) in navigationController.viewControllers.enumerated() {
                     if controller is HomeController {
-                        // Pop to that specific HomeController
                         navigationController.popToViewController(navigationController.viewControllers[index], animated: true)
                         return
                     }

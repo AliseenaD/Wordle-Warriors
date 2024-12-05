@@ -14,6 +14,7 @@ class HomeView: UIView {
     let leaderboardButton = UIButton(type: .system)
     let gameButton = UIButton(type: .system)
     let accountButton = UIButton(type: .system)
+    let logoutButton = UIButton(type: .system)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -24,8 +25,19 @@ class HomeView: UIView {
         setupGameButton()
         setupAccountButton()
         observeThemeChanges()
+        setupLogoutButton()
         
         initConstraints()
+    }
+    
+    private func setupLogoutButton() {
+        logoutButton.setTitle("Logout", for: .normal)
+        logoutButton.setTitleColor(.white, for: .normal)
+        logoutButton.backgroundColor = UIColor(red: 255/255, green: 176/255, blue: 59/255, alpha: 1.0)
+        logoutButton.layer.cornerRadius = 15
+        logoutButton.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 16)
+        logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(logoutButton)
     }
     
     private func setupAccountButton() {
@@ -149,7 +161,13 @@ class HomeView: UIView {
             gameButton.topAnchor.constraint(equalTo: leaderboardButton.bottomAnchor, constant: 15),
             gameButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             gameButton.widthAnchor.constraint(equalToConstant: 250),
-            gameButton.heightAnchor.constraint(equalToConstant: 50)
+            gameButton.heightAnchor.constraint(equalToConstant: 50),
+            
+            logoutButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
+            logoutButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            logoutButton.widthAnchor.constraint(equalToConstant: 100),
+            logoutButton.heightAnchor.constraint(equalToConstant: 40),
+
         ])
     }
 

@@ -96,10 +96,13 @@ class SignupController: UIViewController, CLLocationManagerDelegate {
             "name": name,
             "email": email,
             "country": countryCode,
-            "totalScore": 0, // Initialize total score to 0
-            "dailyWord": "", // Placeholder for daily word assignment
-            "lastUpdated": FieldValue.serverTimestamp(), // Set initial timestamp for daily word tracking
-            "isGameActive": false // To track if user is actively playing a game
+            "totalScore": 0,          // Initialize total score
+            "currentScore": 0,        // Initialize current score
+            "averageScore": 0.0,      // Initialize average score
+            "gamesPlayed": 0,         // Initialize games played for average calculation
+            "dailyWord": "",          // Placeholder for daily word assignment
+            "lastUpdated": FieldValue.serverTimestamp(),
+            "isGameActive": false     // To track active games
         ]
         
         db.collection("users").document(userID).setData(userData) { error in
